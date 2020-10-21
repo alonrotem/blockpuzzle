@@ -2,7 +2,7 @@
 
 [Canvas PoC single-file Block Puzzle Game](https://alonrotem.github.io/blockpuzzle/)
 
-![Main screen](https://raw.githubusercontent.com/alonrotem/blockpuzzle/main/Screenshots/main.png)
+[![Main screen](https://raw.githubusercontent.com/alonrotem/blockpuzzle/main/Screenshots/main.png)](https://alonrotem.github.io/blockpuzzle/)
 
 ## Features:
 
