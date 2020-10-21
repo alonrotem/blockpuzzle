@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="user-scalable=no,initial-scale=1.0,maximum-scale=1.0" />
+        <title>Block Puzzle on Canvas  - Alon Rotem</title>
+        <style>
+            body
+            {
+                margin: 0;
+            }
+            #myCanvas
+            {
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-color: #303030;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas"></canvas>
+        <script>
+            //quick self host
+            //python3 -m http.server
+
+            //playing both sounds. is this a bug?
+            //shape1 = new Up_facing_r(); shape2 = new Down_facing_r(); shape3 = new Single(); board.takenCells = JSON.parse ('[{"x":7,"y":8,"color":"#0094FF","fadeout":false,"alpha":1},{"x":0,"y":7,"color":"#0094FF","fadeout":false,"alpha":1},{"x":0,"y":8,"color":"#0094FF","fadeout":false,"alpha":1},{"x":0,"y":9,"color":"#0094FF","fadeout":false,"alpha":1},{"x":4,"y":2,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":2,"color":"#B200FF","fadeout":false,"alpha":1},{"x":6,"y":2,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":7,"color":"#B200FF","fadeout":false,"alpha":1},{"x":2,"y":9,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":8,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":9,"color":"#B200FF","fadeout":false,"alpha":1},{"x":3,"y":9,"color":"#FF0000","fadeout":false,"alpha":1},{"x":4,"y":9,"color":"#FF0000","fadeout":false,"alpha":1},{"x":2,"y":4,"color":"#B200FF","fadeout":false,"alpha":1},{"x":0,"y":5,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":5,"color":"#B200FF","fadeout":false,"alpha":1},{"x":2,"y":5,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":3,"color":"#B200FF","fadeout":false,"alpha":1},{"x":0,"y":2,"color":"#B200FF","fadeout":false,"alpha":1},{"x":0,"y":3,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":9,"color":"#B200FF","fadeout":false,"alpha":1},{"x":6,"y":9,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":7,"color":"#B200FF","fadeout":false,"alpha":1},{"x":3,"y":8,"color":"#B200FF","fadeout":false,"alpha":1},{"x":4,"y":8,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":8,"color":"#B200FF","fadeout":false,"alpha":1},{"x":8,"y":2,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":8,"y":3,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":6,"y":0,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":8,"y":0,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":3,"y":0,"color":"#B200FF","fadeout":false,"alpha":1},{"x":4,"y":0,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":0,"color":"#B200FF","fadeout":false,"alpha":1},{"x":5,"y":1,"color":"#B200FF","fadeout":false,"alpha":1},{"x":6,"y":1,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":8,"y":1,"color":"#FF6A00","fadeout":false,"alpha":1},{"x":2,"y":0,"color":"#38BC00","fadeout":false,"alpha":1},{"x":2,"y":1,"color":"#38BC00","fadeout":false,"alpha":1},{"x":3,"y":1,"color":"#38BC00","fadeout":false,"alpha":1},{"x":4,"y":1,"color":"#38BC00","fadeout":false,"alpha":1},{"x":0,"y":0,"color":"#FF0000","fadeout":false,"alpha":1},{"x":0,"y":1,"color":"#FF0000","fadeout":false,"alpha":1},{"x":3,"y":5,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":6,"color":"#B200FF","fadeout":false,"alpha":1},{"x":2,"y":6,"color":"#B200FF","fadeout":false,"alpha":1},{"x":3,"y":6,"color":"#B200FF","fadeout":false,"alpha":1},{"x":8,"y":5,"color":"#B200FF","fadeout":false,"alpha":1},{"x":4,"y":5,"color":"#0094FF","fadeout":false,"alpha":1},{"x":4,"y":6,"color":"#0094FF","fadeout":false,"alpha":1},{"x":4,"y":7,"color":"#0094FF","fadeout":false,"alpha":1},{"x":5,"y":6,"color":"#B200FF","fadeout":false,"alpha":1},{"x":6,"y":6,"color":"#B200FF","fadeout":false,"alpha":1},{"x":3,"y":2,"color":"#38BC00","fadeout":false,"alpha":1},{"x":3,"y":3,"color":"#38BC00","fadeout":false,"alpha":1},{"x":4,"y":3,"color":"#38BC00","fadeout":false,"alpha":1},{"x":5,"y":3,"color":"#38BC00","fadeout":false,"alpha":1},{"x":8,"y":6,"color":"#38BC00","fadeout":false,"alpha":1},{"x":8,"y":7,"color":"#38BC00","fadeout":false,"alpha":1},{"x":8,"y":8,"color":"#38BC00","fadeout":false,"alpha":1},{"x":9,"y":7,"color":"#0094FF","fadeout":false,"alpha":1},{"x":9,"y":8,"color":"#0094FF","fadeout":false,"alpha":1},{"x":9,"y":9,"color":"#0094FF","fadeout":false,"alpha":1},{"x":8,"y":4,"color":"#FFD800","fadeout":false,"alpha":1},{"x":5,"y":4,"color":"#0094FF","fadeout":false,"alpha":1},{"x":6,"y":4,"color":"#0094FF","fadeout":false,"alpha":1},{"x":6,"y":5,"color":"#38BC00","fadeout":false,"alpha":1},{"x":7,"y":5,"color":"#38BC00","fadeout":false,"alpha":1},{"x":7,"y":6,"color":"#38BC00","fadeout":false,"alpha":1},{"x":7,"y":7,"color":"#38BC00","fadeout":false,"alpha":1},{"x":6,"y":3,"color":"#FF0000","fadeout":false,"alpha":1},{"x":7,"y":3,"color":"#FF0000","fadeout":false,"alpha":1},{"x":1,"y":0,"color":"#B200FF","fadeout":false,"alpha":1},{"x":2,"y":2,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":1,"color":"#B200FF","fadeout":false,"alpha":1},{"x":1,"y":2,"color":"#B200FF","fadeout":false,"alpha":1}]')
+
+            /*
+            TODO
+            Features
+            - Share your score?
+            - By Alon Rotem links/logo
+
+            Improvements
+            - Refactor: Unify hover/click/unclick event handles, make the game class?
+            - Smart next-shape selection: pick shapes that have space on the board, as much as possible
+            - More shapes
+            - Levels? - move shapes an an array, keep dragged shape index. num of shapes, size of board configurable
+            - Timer?
+            - Reset high score
+
+            DONE Features
+            - Inheritance of shapes
+            - Highlight Shape drop
+            - Improve dragging, from where the mouse really is
+            - Highlight row/column which is about to be complete       
+            - Check if a Shape has place on board
+            - Game over if no shapes have where to go
+            - Highlight if there is only one place on board
+            - Highlight colours - different for filling / predicting fiull rows            
+            - Favicon
+            - Bug: When highlighting the shape's one location, don't highlight finished rows/cols
+            - Better colours
+            - Better visualization of stuck shapesS
+            - Animations
+            - Keep score
+            - Hi score cookie
+            - Sound effets
+            - Bug: high scrore don't get updated when the game ends, until refresh
+            - Update hi score during 
+            - sync bug: 
+                game over sound, before lines clear up (and the game is not over)
+                game is actually over, no shapes can fit, even after a line is cleared, but game over not caught 
+            - Sound on/off
+            - Title + game over
+            - Restart button
+            - Touch and responsive
+            - Adjust to landscape
+            - Bug: high score not updated after clearng lines
+            */
+
+            //Favicon
+            var favIcon = "\
+                iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAAXNSR0IArs4c6QAAAARn\
+                QU1BAACxjwv8YQUAAAAPUExURQAAAEz/AP9qAP/YAAAAADV5oToAAAAFdFJOU/////8A\
+                +7YOUwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAC9JREFUKFNjYEEDQAEGGIALMDIygjEJ\
+                AsgAroKJiYmBmZmZWAFkQC0zUAGaAAsLABfDAhtC0iJWAAAAAElFTkSuQmCC";
+            var docHead = document.getElementsByTagName('head')[0];
+            var newLink = document.createElement('link');
+            newLink.rel = 'shortcut icon';
+            newLink.type = 'image/x-icon';
+            newLink.href = 'data:image/png;base64,'+favIcon;
+            docHead.appendChild(newLink);            
+
+            var colors = {
+                game_background: "#303030", //dark gray
+                blocks_r_shaped: "#38BC00", //medium green
+                blocks_single: "#FFD800", //yellow
+                blocks_double: "#FF0000", //red
+                blocks_triple: "#0094FF", //light blue
+                blocks_quadruple: "#FF6A00", //orange-red
+                blocks_l_shaped : "#B200FF", //purple
+                
+                blocks_square : "#0026FF", //blue
+                blocks_corner : "#FF00DC", //pink
+                
+                borders : "#FFFFFF", //white
+                highlight_filledrows: "#FFFFFF", //white
+                highlight_shapeonboard: "#A0A0A0", //soft gray
+                shape_unmovable: "#A0A0A0" //soft gray
+            };
+
+            var canvas = document.querySelector("#myCanvas");
+            var ctx = canvas.getContext("2d");
+            var topMargin = 100;
+            var cellsize = 25;
+            
+            function setCanvasSize(){
+                canvas.height = window.innerHeight;
+                canvas.width = window.innerWidth;
+            }
+            window.addEventListener("resize", setCanvasSize);
+
+            var Shape = function (cells, color, shapeCellSize){
+                this.cells = cells;
+                this.color = color;
+                this.width = 0;
+                this.height = 0;
+                this.x = 0;
+                this.y = 0;
+                var alpha = 0;
+                this.placeableOnBoard = true;
+                this.singlePlaceOnBoard = null;
+                this.cellsize = ((shapeCellSize)? shapeCellSize : cellsize);
+                for(var i=0; i < cells.length; i++){
+                    this.width = Math.max(this.width, (cells[i][0]+1) * this.cellsize);
+                    this.height = Math.max(this.height, (cells[i][1]+1) * this.cellsize);
+                }
+                this.draw = function(x,y, fillcolor){
+                    ctx.beginPath();
+                    var yoffsetfadein = 0;
+                    if(alpha < 1)
+                    {
+                        alpha += 0.04;
+                        yoffsetfadein = (1-alpha) * 70;
+                    }
+                    ctx.globalAlpha = alpha;
+                    ctx.strokeStyle = colors.borders;
+                    if(!fillcolor)
+                        fillcolor = this.color;
+                    ctx.fillStyle = fillcolor;
+                    for(var i=0; i < this.cells.length; i++)
+                    {
+                        ctx.rect(
+                            this.cells[i][0] * this.cellsize + x,
+                            this.cells[i][1] * this.cellsize + y - yoffsetfadein,
+                            this.cellsize,
+                            this.cellsize);
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                    ctx.globalAlpha = 1;
+                    ctx.closePath();
+                    
+                    this.x = x;
+                    this.y = y;
+                }//draw
+
+                this.isOnShape = function(x, y){
+                    for(var i=0; i < cells.length; i++)
+                    {
+                        if((x >= (cells[i][0] * this.cellsize + this.x)) &&
+                            (x <= (cells[i][0] * this.cellsize + this.x) + this.cellsize) &&
+                            (y >= (cells[i][1] * this.cellsize + this.y)) &&
+                            (y <= (cells[i][1] * this.cellsize + this.y) + this.cellsize))
+                            {
+                                return true;
+                            }
+                    }
+                    return false;
+                }//isOnShape
+            };
+
+            //[ ]
+            //[ ][ ][ ][ ]
+            var Up_facing_r = function(){}
+            Up_facing_r.prototype = new Shape([[0,0], [0,1], [1,1], [2,1]], colors.blocks_r_shaped);
+
+            //[ ][ ]
+            //[ ]
+            //[ ]
+            //[ ]
+            var Right_facing_r = function(){}
+            Right_facing_r.prototype = new Shape( [[0,0],[1,0],[0,1],[0,2]], colors.blocks_r_shaped);
+
+            //[ ][ ]
+            //   [ ]
+            //   [ ]
+            //   [ ]
+            var Left_facing_r = function(){}
+            Left_facing_r.prototype = new Shape([[0,0],[1,0],[1,1],[1,2]], colors.blocks_r_shaped);            
+
+            //[ ][ ][ ][ ]
+            //[ ]
+            var Down_facing_r = function(){}
+            Down_facing_r.prototype = new Shape([[0,0],[0,1],[1,0],[2,0]], colors.blocks_r_shaped);              
+
+            //[ ]
+            var Single = function(){}
+            Single.prototype = new Shape([[0,0]], colors.blocks_single);                
+
+            //[ ][ ]
+            var Double_horizontal = function(){}
+            Double_horizontal.prototype = new Shape([[0,0],[1,0]], colors.blocks_double);               
+
+            //[ ][ ][ ]
+            var Tripe_horizontal = function(){}
+            Tripe_horizontal.prototype = new Shape([[0,0],[1,0],[2,0]], colors.blocks_triple);              
+                
+
+            //[ ][ ][ ][ ]
+            var Quadruple_horizontal = function(){}
+            Quadruple_horizontal.prototype = new Shape([[0,0],[1,0],[2,0],[3,0]], colors.blocks_quadruple);             
+
+            //[ ]
+            //[ ]
+            var Double_vertical = function(){}
+            Double_vertical.prototype = new Shape([[0,0],[0,1]], colors.blocks_double);              
+
+            //[ ]
+            //[ ]
+            //[ ]
+            var Tripe_vertical = function(){}
+            Tripe_vertical.prototype = new Shape([[0,0],[0,1],[0,2]], colors.blocks_triple);               
+
+            //[ ]
+            //[ ]
+            //[ ]
+            //[ ]            
+            var Quadruple_vertical = function(){}
+            Quadruple_vertical.prototype = new Shape([[0,0],[0,1],[0,2],[0,3]], colors.blocks_quadruple);             
+
+            //         [ ]
+            //[ ][ ][ ][ ]
+            var Up_facing_l = function(){}
+            Up_facing_l.prototype = new Shape([[2,0], [0,1], [1,1], [2,1]], colors.blocks_l_shaped);                
+
+            //[ ]
+            //[ ]
+            //[ ]
+            //[ ][ ]
+            var Right_facing_l = function(){}
+            Right_facing_l.prototype = new Shape([[0,0],[1,2],[0,1],[0,2]], colors.blocks_l_shaped);              
+
+            //   [ ]
+            //   [ ]
+            //   [ ]
+            //[ ][ ]
+            var Left_facing_l = function(){}
+            Left_facing_l.prototype = new Shape([[0,2],[1,0],[1,1],[1,2]], colors.blocks_l_shaped);              
+
+            //[ ][ ][ ][ ]
+            //         [ ]
+            var Down_facing_l = function(){}
+            Down_facing_l.prototype = new Shape([[0,0],[1,0],[2,0],[2,1]], colors.blocks_l_shaped);  
+
+            var shapes = [
+                Up_facing_r,
+                Right_facing_r,
+                Left_facing_r,
+                Down_facing_r,
+                Single,
+                Double_horizontal,
+                Tripe_horizontal,
+                Quadruple_horizontal,
+                Double_vertical,
+                Tripe_vertical,
+                Quadruple_vertical,
+                Up_facing_l,
+                Right_facing_l,
+                Left_facing_l,
+                Down_facing_l
+            ];
+
+            var titleBlockSize = 5;
+            var letter_B = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,0],[2,0],[2,1],[1,2],[2,2],[3,2],[1,4],[2,4],[3,4],[3,3]], colors.blocks_r_shaped, titleBlockSize);
+            var letter_L = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,4],[2,4]], colors.blocks_single, titleBlockSize);
+            var letter_O = new Shape([[1,0],[2,0],[0,1],[0,2],[0,3],[1,4],[2,4],[3,1],[3,2],[3,3]], colors.blocks_double, titleBlockSize);
+            var letter_C = new Shape([[1,0],[2,0],[0,1],[0,2],[0,3],[1,4],[2,4],[3,1],[3,3]], colors.blocks_triple, titleBlockSize);
+            var letter_K = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,2],[2,3],[3,4],[2,1],[3,0]], colors.blocks_quadruple, titleBlockSize);
+            var letter_P = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,0],[2,0],[2,1],[1,2],[2,2]], colors.blocks_l_shaped, titleBlockSize);
+            var letter_U = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,4],[2,4],[2,0],[2,1],[2,2],[2,3]], colors.blocks_square, titleBlockSize);
+            var letter_Z = new Shape([[0,0],[1,0],[0,4],[1,4],[2,4],[2,0],[2,1],[0,3],[1,2]], colors.blocks_corner, titleBlockSize);
+            var letter_E = new Shape([[0,0],[0,1],[0,2],[0,3],[0,4],[1,0],[2,0],[1,2],[2,2],[1,4],[2,4]], colors.blocks_quadruple, titleBlockSize);            
+            var title = [letter_B, letter_L, letter_O, letter_C, letter_K, letter_P, letter_U, letter_Z, letter_Z, letter_L, letter_E];
+            var titlewidth =0;
+            for(var t=0; t<title.length; t++)
+            {
+                titlewidth += title[t].width + titleBlockSize;
+            }
+            //var boardSize = 10;
+            //var cellsize = 25;
+
+            var boardcellfill = function(x,y,color)
+            {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.fadeout = false;
+                this.alpha = 1;
+            }
+
+            var Board = function(boardSize)
+            {
+                this.x = 0;
+                this.y = 0;
+
+                this.boardSize = boardSize;
+                this.takenCells = [];
+                this.potentialBoardLocations = {"None": 0, "One": 1, "Many": 2};
+
+                this.draw = function(x, y)
+                {
+                    this.x = x;
+                    this.y = y;
+
+                    for(i=0; i < boardSize; i++)
+                    {
+                        for(j=0; j < boardSize; j++)
+                        {
+                            ctx.beginPath();
+                            ctx.lineWidth = "1";
+                            ctx.strokeStyle = colors.borders;
+                            ctx.rect(this.x + (i * cellsize), this.y + (j * cellsize), cellsize, cellsize);
+                            ctx.stroke();
+                            ctx.closePath();
+                            var fillThisCell = this.takenCells.find(element => element.x==i && element.y==j);
+                            if(fillThisCell)
+                            {
+                                ctx.beginPath();
+                                ctx.rect(this.x + (i * cellsize)+1, this.y + (j * cellsize)+1, cellsize-2, cellsize-2);
+                                ctx.globalAlpha = fillThisCell.alpha;
+                                ctx.fillStyle = fillThisCell.color;
+                                ctx.fill();
+                                ctx.globalAlpha = 1;
+                                if(fillThisCell.fadeout)
+                                {
+                                    fillThisCell.alpha -= 0.03;
+                                }
+                                if(fillThisCell.alpha <= 0)
+                                {
+                                    this.takenCells = this.takenCells.filter(removable => {
+                                        return removable.x != fillThisCell.x || removable.y != fillThisCell.y;
+                                    });
+                                }
+                            }
+                            
+                            //ctx.closePath();
+                        }
+                    }
+                    ctx.closePath();
+                }//draw
+
+                this.cleanupFullRowsCols = function(soundOn)
+                {
+                    //check for full rows/columns
+                    var fullrows = Array(this.boardSize).fill(false);
+                    var fullcols = Array(this.boardSize).fill(false);
+                    var fullRowColCount = 0;
+                    for(i=0; i< this.boardSize; i ++)
+                    {
+                        var itemsinrow = this.takenCells.filter(element => element.x == i && !element.fadeout);
+                        if(itemsinrow && itemsinrow.length == this.boardSize)
+                        {
+                            fullrows[i] = true;
+                            fullRowColCount++;
+                        }
+                        var itemsincol = this.takenCells.filter(element => element.y == i && !element.fadeout)
+                        if(itemsincol && itemsincol.length == this.boardSize)
+                        {
+                            fullcols[i] = true;
+                            fullRowColCount++;
+                        }                    
+                    }
+                    if(fullRowColCount > 0)
+                    {
+                        if(soundsOn)
+                            audio_lineCompleted.play();
+                        for(var i=0; i < this.takenCells.length; i++)
+                        {
+                            this.takenCells[i].fadeout = (fullrows[this.takenCells[i].x] || fullcols[this.takenCells[i].y]);
+                        }
+                    }
+                    return fullRowColCount * this.boardSize;
+                    /*
+                    this.takenCells = this.takenCells.filter(function(element){
+                        return !fullrows[element.x] && !fullcols[element.y];
+                    });
+                    */                 
+                }//cleanupFullRowsCols
+
+                this.isShapeOnBoard = function(shape){
+                    var returnObj = { "isOnboard": true, "onboardCoords": [] };
+
+                    var shapeonboard = true;
+                    var shapeOnBoardHighlightCoords = [];
+                    for(var o=0; o<shape.cells.length; o++)
+                    {
+                        var boardcoordsx = Math.floor((shape.x - this.x)/cellsize) + shape.cells[o][0];
+                        var boardcoordsy = Math.floor((shape.y - this.y)/cellsize) + shape.cells[o][1];
+
+                        var currentOutlineIsOnBoardX = (boardcoordsx >= 0 && boardcoordsx < boardSize);
+                        var currentOutlineIsOnBoardY = (boardcoordsy >= 0 && boardcoordsy < boardSize);
+                        var cellAlreadyTaken = (this.takenCells.find(element => element.x==boardcoordsx && element.y==boardcoordsy));
+
+                        if(!currentOutlineIsOnBoardX || !currentOutlineIsOnBoardY || cellAlreadyTaken)
+                        {
+                            returnObj.isOnboard = false;
+                            returnObj.onboardCoords = [];
+                            return returnObj;
+                        }
+                        else
+                        {
+                            returnObj.onboardCoords.push([boardcoordsx, boardcoordsy]);
+                        }
+                    }
+                    return returnObj;
+                }//isShapeOnBoard
+
+                this.highlightShape = function(coords, shapecolor, highlightfullrowscols)
+                {
+                    ctx.beginPath();
+
+                    var filledRowsColumns = [];
+
+                    for(i=0; i< boardSize; i ++)
+                    {
+                        var itemsinrow = this.takenCells.filter(element => element.y == i);
+                        var itemsincol = this.takenCells.filter(element => element.x == i);
+
+                        var newitemsinrow = coords.filter(element => element[1] == i  && !(this.takenCells.find(el => element[0]==el.x && element[1]==el.y)));
+                        var newitemsincol = coords.filter(element => element[0] == i && !(this.takenCells.find(el => element[0]==el.x && element[1]==el.y)));
+
+                        if(itemsinrow && newitemsinrow && newitemsinrow.length + itemsinrow.length == this.boardSize)
+                        {
+                            for(var j=0; j< this.boardSize; j++)
+                            {
+                                filledRowsColumns.push([j,i]);
+                            }
+                        }
+
+                        if(itemsincol && newitemsincol && itemsincol.length + newitemsincol.length == this.boardSize)
+                        {
+                            for(var j=0; j< this.boardSize; j++)
+                            {
+                                filledRowsColumns.push([i,j]);
+                            }
+                        } 
+                    }
+
+                    ctx.beginPath();
+                    for(var h=0; h < coords.length; h++)
+                    {
+                        
+                        ctx.fillStyle = colors.highlight_shapeonboard;
+                        ctx.rect(
+                            this.x + (coords[h][0] * cellsize) +1,
+                            this.y + (coords[h][1] * cellsize) +1,
+                            cellsize-2,
+                            cellsize-2);
+                        ctx.fill();
+                    }
+                    ctx.closePath();
+
+                    if(highlightfullrowscols)
+                    {
+                        ctx.beginPath();
+                        for(var h=0; h < filledRowsColumns.length; h++)
+                        {
+                            ctx.fillStyle = "white";
+                            ctx.rect(
+                                this.x + (filledRowsColumns[h][0] * cellsize) +1,
+                                this.y + (filledRowsColumns[h][1] * cellsize) +1,
+                                cellsize-2,
+                                cellsize-2);
+                            ctx.fill();
+                        }
+                        ctx.closePath();
+                    }                  
+                }//highlightShape
+
+                this.shapeDropped = function(coords, color)
+                {
+                    for(var h=0; h < coords.length; h++)
+                    {
+                        if(!this.takenCells.find(element => element.x==coords[h][0] && element.y==coords[h][1]))
+                        {
+                            this.takenCells.push(new boardcellfill(coords[h][0], coords[h][1], color));
+                        }
+                    }
+                }//shapeDropped
+
+                this.findPotentialPositionsOnBoard = function(shape)
+                {
+                    if(!shape)
+                        return;
+
+                    var locations = [];
+                    for(var x=0; x < this.boardSize; x++)
+                    {
+                        for(var y=0; y < this.boardSize; y++)
+                        {
+                            var shapeCanBePlacedHere = true;
+                            var o=0;
+                            for(; o < shape.cells.length; o++)
+                            {
+                                if((x + shape.cells[o][0] > this.boardSize -1 ||  y + shape.cells[o][1] > this.boardSize -1) ||
+                                (this.takenCells.find(cell => cell.x == x + shape.cells[o][0] && cell.y == y + shape.cells[o][1] && !cell.fadeout)))
+                                {
+                                    var shapeCanBePlacedHere = false;
+                                    break;
+                                }
+                            }
+                            //make sure we scanned all the cells, and didn't break prematurely
+                            if(o == shape.cells.length && shapeCanBePlacedHere)
+                            {
+                                locations.push([x,y]);
+                            }
+                            if(locations.length > 1)
+                            {
+                                //return { "numOfOptions": this.potentialBoardLocations.Many, "singlePlace": locations };
+                                shape.placeableOnBoard = true;
+                                shape.singlePlaceOnBoard = null;
+                                return;
+                            }
+                        }
+                    }
+                    if(locations.length == 1)
+                    {
+                        //return { "numOfOptions": this.potentialBoardLocations.One, "singlePlace": locations };
+                        shape.placeableOnBoard = true;
+                        shape.singlePlaceOnBoard = locations[0];
+                    }
+                    else if (locations.length == 0)
+                    {
+                        //return { "numOfOptions": this.potentialBoardLocations.None, "singlePlace": [] };
+                        shape.placeableOnBoard = false;
+                        shape.singlePlaceOnBoard = null;
+                    }
+                }//findPotentialPositionsOnBoard
+            }//Board class
+
+            var getCookieValue = function(key, defaultVal){
+                var cookiestr = document.cookie;
+                var cookieobj = {};
+                if(cookiestr)
+                {
+                        try {
+                        cookieobj = JSON.parse(cookiestr);
+                    }
+                    catch (e) { 
+                        cookieobj = {};
+                    }
+                }
+                var cookievalue = cookieobj[key];
+                if(cookievalue || cookievalue == 0)
+                {
+                    var cookienum = parseInt(cookievalue);
+                    return (!isNaN(cookienum))? cookienum : cookievalue;
+                }
+                else
+                {
+                    setCookieValue(key, defaultVal);
+                    return defaultVal;
+                }
+            };
+
+            var setCookieValue = function(key, val){
+                var cookiestr = document.cookie;
+                var cookieobj = {};
+                if(cookiestr)
+                {
+                    cookieobj = JSON.parse(cookiestr);
+                }
+                cookieobj[key] = val;
+                document.cookie = JSON.stringify(cookieobj);
+            };
+
+            function drawSpeaker(drawx, drawy, color, scale, silent)
+            {
+                ctx.save();
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 2 * scale;
+                ctx.beginPath();
+                ctx.arc(drawx+(19 * scale), drawy+(12 * scale), 4 * scale, -0.5*Math.PI, 0.5*Math.PI, false);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(drawx+(19 * scale),drawy+(12 * scale), 9 * scale, -0.5*Math.PI, 0.5*Math.PI, false);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(drawx + (17 * scale), drawy);
+                ctx.lineTo(drawx + (17 * scale), drawy + (24 * scale));
+                ctx.lineTo(drawx + (10 * scale), drawy+ (17 * scale));
+                ctx.lineTo(drawx + (10 * scale), drawy + (7 * scale));
+                ctx.lineTo(drawx + (17 * scale), drawy);
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.moveTo(drawx + (8 * scale),drawy + (7* scale));
+                ctx.lineTo(drawx + (2 * scale),drawy + (7 * scale));
+                ctx.lineTo(drawx, drawy + (9 * scale));
+                ctx.lineTo(drawx, drawy + (15 * scale));
+                ctx.lineTo(drawx + (2 * scale),drawy + (17 * scale));
+                ctx.lineTo(drawx + (8 * scale),drawy + (17* scale));
+                ctx.lineTo(drawx+ (8 * scale),drawy+ (7 * scale));
+                ctx.fill();
+                
+                if(silent)
+                {
+                    ctx.beginPath();
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = 3 * scale;
+                    ctx.moveTo(drawx,drawy+(24 * scale));
+                    ctx.lineTo(drawx+ (30 * scale),drawy);
+                    ctx.stroke();
+                }
+                ctx.restore();
+                return [drawx, drawx + (30 * scale), drawy, drawy + (24 * scale)];
+            }
+
+            var drawRestartIcon = function(drawx, drawy, size, color){
+                ctx.save();
+                ctx.beginPath();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle=color;
+                ctx.fillStyle=color;
+                ctx.beginPath();
+                ctx.arc(drawx,drawy, size, -0.3*Math.PI, 1.3*Math.PI, false);
+                ctx.stroke();
+                ctx.beginPath();
+
+                var ptx = drawx + size * Math.cos((Math.PI * 2 ) - 0.4*Math.PI);
+                var pty = drawy + size * Math.sin((Math.PI * 2 ) - 0.4*Math.PI);
+
+                ctx.moveTo(ptx,pty);
+                ctx.lineTo(ptx+(size/1.2),pty);
+                ctx.lineTo(ptx, pty+(size/1.2));
+                ctx.lineTo(ptx,pty);
+                ctx.fill();
+                ctx.restore();
+                return [drawx - size, drawx + size, drawy - size, drawy + size];
+            }
+
+            var tooltip = function (x,y, text){
+                var fontsize= 12
+                var tooltipText = text;
+                var lineHeight = fontsize * 1.286;
+                ctx.save();
+                ctx.beginPath();
+                ctx.font = fontsize+"px arial";
+                ctx.textAlign = "left";           
+                var textWidth = ctx.measureText(tooltipText).width;
+                ctx.strokeStyle="black";
+                ctx.fillStyle = "#FFFFCC";
+                ctx.textBaseline = 'top';
+                ctx.fillRect(x+12, y+20, textWidth+6, lineHeight);
+                ctx.beginPath();
+                ctx.fillStyle = "black";
+                ctx.fillText(tooltipText, x+15, y+23);
+                ctx.restore();                
+            }
+
+            var shape1 = null;
+            var shape2 = null;
+            var shape3 = null;
+            var board = new Board(10, 25)
+
+            var mousex = 0;
+            var mousey = 0;
+            var dragOffsetx = 0;
+            var dragOffsety = 0;
+            var mouseButtonPressed = false;
+            var draggedShape = null;
+            var draggedShapeIsOnBoard = false;
+            var droplocation = [];
+            var score = 0;
+            var hiscore = getCookieValue("hiscore", 0);
+            var gameover = false;
+            var soundsOn = getCookieValue("soundsOn", true);
+            var clickingSpeaker = false;
+            var clickingRestart = false;
+
+            window.addEventListener("mousemove", function(ev){
+                mousex = ev.clientX;
+                mousey = ev.clientY;
+            });
+
+            window.addEventListener("mousedown", function(ev){
+                mouseButtonPressed = true;
+            });
+
+            window.addEventListener("mouseup", function(ev){
+                mouseButtonPressed = false;
+            });
+
+            canvas.addEventListener("touchstart", function (e) {
+                mouseButtonPressed = true;
+                e.preventDefault();
+                mousex = e.targetTouches[0].clientX;
+                mousey = e.targetTouches[0].clientY;
+            }, false);
+
+            canvas.addEventListener("touchend", function (e) {
+                mouseButtonPressed = false;
+                e.preventDefault();
+                mousex = e.changedTouches[0].clientX;
+                mousex = e.changedTouches[0].clientY;      
+            }, false);
+
+            canvas.addEventListener("touchmove", function (e) {
+                e.preventDefault();
+                mousex = e.touches[0].clientX;
+                mousey = e.touches[0].clientY;
+            }, false);
+
+            function createNewShapes()
+            {
+                shape1 = new shapes[(Math.floor(Math.random() * shapes.length))]();
+                shape2 = new shapes[(Math.floor(Math.random() * shapes.length))]();
+                shape3 = new shapes[(Math.floor(Math.random() * shapes.length))]();
+            }
+
+            function startGame()
+            { 
+                gameover = false;
+                createNewShapes();
+                board.takenCells = [];
+                score = 0;    
+            }
+
+            function upScore(addedScore)
+            {
+                score += addedScore;
+                var cookieHiscrore = getCookieValue("hiscore", 0);
+                if(cookieHiscrore || cookieHiscrore == 0)
+                {
+                    var cookieInt = parseInt(cookieHiscrore);
+                    if(((!isNaN(cookieInt)) && (score > cookieInt)) || (isNaN(cookieInt)))
+                    {
+                        setCookieValue("hiscore", score);
+                    }
+                }                  
+            }
+            
+            function runGame()
+            {
+                requestAnimationFrame(runGame);
+
+                ctx.clearRect(0,0, innerWidth, innerHeight);
+
+                if(!shape1 && !shape2 && !shape3)
+                {
+                    createNewShapes();                   
+                }
+
+                var responsiveLandscapeMode = innerHeight < 500;
+
+                var placehodersize = (4 * cellsize);
+                var titley = (responsiveLandscapeMode)? 3 : 20;
+                var starty = (responsiveLandscapeMode)? 33 : topMargin;
+                //calculate locations
+                
+                
+                var startx = (responsiveLandscapeMode) ? 
+                    ((innerWidth - (placehodersize + cellsize + board.boardSize * (cellsize + ctx.lineWidth)))/2):
+                    ((innerWidth - (board.boardSize * (cellsize + ctx.lineWidth)))/2);
+                var placehoderx1 = (responsiveLandscapeMode) ? 
+                    (startx + cellsize + board.boardSize * (cellsize + ctx.lineWidth)):
+                    ((innerWidth / 2) - (8 * cellsize));
+                var placehoderx2 = (responsiveLandscapeMode) ? 
+                    placehoderx1:
+                    ((innerWidth / 2) - (2 * cellsize));
+                var placehoderx3 = (responsiveLandscapeMode) ?
+                    placehoderx1 :
+                    ((innerWidth / 2) + (4 * cellsize));
+                var placehodery1 = (responsiveLandscapeMode) ? 
+                    titley:
+                    ((1.5 * topMargin) + (board.boardSize * cellsize));
+                var placehodery2 = (responsiveLandscapeMode) ?
+                    (placehodery1 + placehodersize + 5):
+                    placehodery1;
+                var placehodery3 = (responsiveLandscapeMode) ?
+                    (placehodery2 + placehodersize + 5):
+                    placehodery1;
+                                
+                board.draw(startx, starty);
+
+                var speakerx = (responsiveLandscapeMode)? startx - 2 * cellsize : startx;
+                var speakery = (responsiveLandscapeMode)? starty: starty-37;
+
+                var restartx = (responsiveLandscapeMode)? startx - 1.5 * cellsize: startx + 45;
+                var restarty = (responsiveLandscapeMode)? starty + 2 * cellsize: starty - 28;
+
+                var speakerCoords = drawSpeaker(speakerx, speakery, "white", 0.8, !soundsOn);
+                var mouseOnSpeaker = (mousex > speakerCoords[0] && mousex < speakerCoords[1] && mousey > speakerCoords[2] && mousey < speakerCoords[3]);
+                if(mouseOnSpeaker)
+                {
+                    tooltip(mousex, mousey, "Turn sounds " + ((soundsOn)? "off": "on"));
+                }
+                if(mouseButtonPressed && mouseOnSpeaker)
+                {
+                    clickingSpeaker = true;
+                }
+                if(!mouseButtonPressed && clickingSpeaker)
+                {
+                    clickingSpeaker = false;
+                    soundsOn = !soundsOn;
+                    setCookieValue("soundsOn", soundsOn);                    
+                }
+
+                var restartCoords = drawRestartIcon(restartx, restarty, 9, gameover? colors.blocks_r_shaped:"white");
+                var mouseOnRestart = (mousex > restartCoords[0] && mousex < restartCoords[1] && mousey > restartCoords[2] && mousey < restartCoords[3]);
+                if(mouseOnRestart)
+                {
+                    tooltip(mousex, mousey, "Restart");
+                }
+                if(mouseButtonPressed && mouseOnRestart)
+                {
+                    clickingRestart = true;
+                }
+                if(!mouseButtonPressed && clickingRestart)
+                {
+                    clickingRestart = false;
+                    startGame();
+                }                
+
+                //title
+                var letterOffset = startx;//(innerWidth - titlewidth)/2;
+                for(var t=0; t < title.length; t++)
+                {
+                    title[t].draw(letterOffset, titley);
+                    letterOffset += title[t].width + titleBlockSize;
+                }
+
+                if(gameover)
+                {
+                    ctx.save();
+                    ctx.beginPath(); 
+                    ctx.shadowColor = "black";
+                    ctx.shadowOffsetX = 5;
+                    ctx.shadowOffsetY = 5;
+                    ctx.shadowBlur = 7;
+                    ctx.font = "bold 60px arial";
+                    var gradient = ctx.createLinearGradient(startx, starty, startx+board.boardSize * cellsize, starty);
+                    gradient.addColorStop(0, colors.blocks_r_shaped);
+                    gradient.addColorStop(0.5, colors.blocks_single);
+                    gradient.addColorStop(1, colors.blocks_quadruple);
+                    ctx.fillStyle = gradient;
+                    ctx.textAlign = "center"; 
+                    ctx.fillText("Game over", innerWidth / 2, starty + ((board.boardSize * cellsize)/2));
+                    ctx.closePath();
+                    ctx.restore();
+                }
+
+                //draw placeholders
+                ctx.beginPath();
+                ctx.fillStyle = "gray";
+                ctx.rect(placehoderx1+1, placehodery1-1, placehodersize-2, placehodersize-2); ctx.fill();
+                ctx.rect(placehoderx2+1, placehodery2-1, placehodersize-2, placehodersize-2); ctx.fill();
+                ctx.rect(placehoderx3+1, placehodery3-1, placehodersize-2, placehodersize-2); ctx.fill();
+                ctx.closePath();
+
+                //scrore and high score
+                ctx.beginPath();
+                ctx.font = "15px Arial";
+                ctx.fillStyle = "yellow";
+                ctx.textAlign = "center";           
+                ctx.fillText(score, startx + ((board.boardSize * cellsize)/2), starty + (board.boardSize * cellsize) +14);
+
+                ctx.beginPath();
+                ctx.font = "15px Arial";
+                ctx.fillStyle = "white";
+                ctx.textAlign = "end";
+                hiscore = getCookieValue("hiscore", 0);     
+                var hiscoretext = "High score: " + hiscore;
+                //hiscore - retular
+                if(!responsiveLandscapeMode)
+                {
+                    ctx.fillText(hiscoretext , startx + (cellsize * board.boardSize), starty - 20);
+                }
+                else
+                {
+                    //hiscore - rotated
+                    ctx.save();
+                    var textWidth = ctx.measureText("Horizontal").width;
+                    var rotatedx = startx + (textWidth/2);
+                    var rotatedy = starty + (textWidth/2);
+                    ctx.translate(rotatedx, rotatedy);
+                    ctx.rotate(-0.5*Math.PI);
+                    ctx.translate(-rotatedx,-rotatedy);
+                    ctx.fillText(hiscoretext , rotatedx - 50, rotatedy - (textWidth /2) - 30);
+                    ctx.restore();
+                }
+
+                //go over the Shape's outline squares
+                //check each to be over a square of the board
+                //if they are all on, highlight the squares on the board
+                if(draggedShape)
+                {                
+                    var shapeOnBoard = board.isShapeOnBoard(draggedShape);
+                    draggedShapeIsOnBoard = shapeOnBoard.isOnboard;
+                    if(shapeOnBoard.isOnboard)
+                    {
+                        board.highlightShape(shapeOnBoard.onboardCoords, draggedShape.color, true);
+                        droplocation = shapeOnBoard.onboardCoords;
+                    }
+                    if(draggedShape.singlePlaceOnBoard)
+                    {
+                        var highlight =[];
+                        for(i=0; i< draggedShape.cells.length; i++)
+                        {
+                            highlight.push([draggedShape.singlePlaceOnBoard[0] + draggedShape.cells[i][0], draggedShape.singlePlaceOnBoard[1] + draggedShape.cells[i][1]]);
+                        }
+                        board.highlightShape(highlight, draggedShape.color, false);
+                        //ctx.fillText("Single place " + highlight , placehoderx1, placehodery + 150);
+                    }
+
+                    draggedShape.draw(mousex - dragOffsetx, mousey - dragOffsety);
+                }
+
+                if(shape1 && draggedShape != shape1)
+                {
+                    var color = (shape1.placeableOnBoard)? shape1.color: colors.shape_unmovable;
+                    shape1.draw(placehoderx1 + ((placehodersize - shape1.width)/2), placehodery1, color);
+                }
+
+                if(shape2 && draggedShape != shape2)
+                {
+                    var color = (shape2.placeableOnBoard)? shape2.color: colors.shape_unmovable;
+                    shape2.draw(placehoderx2 + ((placehodersize - shape2.width)/2), placehodery2, color);
+                }
+
+                if(shape3 && draggedShape != shape3)
+                {
+                    var color = (shape3.placeableOnBoard)? shape3.color: colors.shape_unmovable;
+                    shape3.draw(placehoderx3 + ((placehodersize - shape3.width)/2), placehodery3, color);
+                }
+
+                if(mouseButtonPressed && shape1 && shape1.isOnShape(mousex, mousey) && shape1.placeableOnBoard)
+                {
+                    //ctx.fillText('Shape1', 0, 10);
+                    draggedShape = shape1;
+                    dragOffsetx = mousex - draggedShape.x;
+                    dragOffsety = mousey- draggedShape.y;
+                }
+
+                if(mouseButtonPressed &&  shape2 && shape2.isOnShape(mousex, mousey) && shape2.placeableOnBoard)
+                {
+                    //ctx.fillText('Shape2', 0, 10);
+                    draggedShape = shape2;
+                    dragOffsetx = mousex - draggedShape.x;
+                    dragOffsety = mousey- draggedShape.y;                             
+                }
+
+                if(mouseButtonPressed &&  shape3 && shape3.isOnShape(mousex, mousey) && shape3.placeableOnBoard)
+                {
+                    //ctx.fillText('Shape3', 0, 10);
+                    draggedShape = shape3;
+                    dragOffsetx = mousex - draggedShape.x;
+                    dragOffsety = mousey- draggedShape.y;                                    
+                }
+
+                //game over:
+                //there are shapes, but none can fit on the board.
+                //check if there is a placeable shape.
+                if(!mouseButtonPressed)
+                {
+                    if(draggedShapeIsOnBoard && droplocation.length > 0)
+                    {
+                        if(soundsOn)
+                            audio_shapeDropped.play();
+                        board.shapeDropped(droplocation, draggedShape.color);
+                        upScore(draggedShape.cells.length);                      
+                        draggedShapeIsOnBoard = false;
+
+                        if(draggedShape == shape1)
+                        {
+                            shape1 = null;
+                        }
+                        else if(draggedShape == shape2)
+                        {
+                            shape2 = null;
+                        }
+                        else if(draggedShape == shape3)
+                        {
+                            shape3 = null;
+                        }
+
+                        upScore(board.cleanupFullRowsCols(soundsOn));
+
+                        board.findPotentialPositionsOnBoard(shape1);
+                        board.findPotentialPositionsOnBoard(shape2);
+                        board.findPotentialPositionsOnBoard(shape3);
+
+                        var noShapePlaceableOnBoard = true;
+                        if((shape1 || shape2 || shape3) &&
+                            (!((shape1 && shape1.placeableOnBoard) ||
+                            (shape2 && shape2.placeableOnBoard) ||
+                            (shape3 && shape3.placeableOnBoard))))
+                        {
+                            //if(!gameover)
+                            {
+                                //Game over.
+                                ctx.fillText("Game over!", 10, 90);
+                                if(soundsOn)
+                                    audio_gameOver.play();
+                                gameover = true;
+
+                            }
+                        }                        
+                    }
+                    draggedShape = null;
+                    droplocation = [];
+                }
+            }
+
+            var audio_shapeDropped = new Audio("\
+                data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjQ1LjEwMAAAAAAAAAAAAAAA//\
+                tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAKAAAI+QAuLi4uLi4uLi5FRUVFRUVFRUVFXFxcXFxcXFx\
+                cXHR0dHR0dHR0dHSLi4uLi4uLi4uLoqKioqKioqKiorq6urq6urq6urrR0dHR0dHR0dHR6Ojo6Ojo6Ojo6P//\
+                //////////8AAAAATGF2YzU4LjkxAAAAAAAAAAAAAAAAJAOHAAAAAAAACPnepiU0AAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAP/7UMQAAAnRkzO0EoABdxfvNx6wAgA0o3AABHAB+BQA4x/OfJqdyBwABQTAACCink\
+                IocFGU5z0Od//+Rs787////1f///+c/QmQjZzvO+omHxcQAMDi6EJ//U+hCSNyEZQ4KE/v7vtskaTkdxtICAA\
+                AYIsJdP4TOwq+1MP9wRMZnM+g2SYVsYVxGbm6R85J81FJ2wP5a81PsXZy3in2+JOJn5gnOc2orq6TZFdexkT9\
+                nzkv/8CIJ3er/5nwxT6nzvpVd5dnd0Ik7AYymVpyciL/+1LEBwALhNVv/MaAEX40K/z1nfKUj4AaA9PYDIlHx\
+                8IT5kXkklmqKKKUiBmLxmijWSJ5aT9JJJJ0SxaKqKKKKkklooo/XycPI2SSR///WiyjJYiUHZUFn9sNf/4i5L\
+                6vs/WjszRMOoJbGWqfT5l+rnaekyOek0gM7UoW1+gYqEeEf3CY+Sp/Vma/74lqApnF7h1t+KqKd9NAiDS7sq9\
+                vtzfhYEn87pqz/EY8ig9+b/x7/9zvWVLf+aFy3bQ25y//YUoWd4WJlAE9E/B+XG61Qf/7UsQHAAv9V0PkvVIB\
+                cbSlaFwqUOP52q6z2XxoVahY3VcHuD+E0q3PFsYiFR1mmoRHqBM6rzqtuhv30Ih8b0Iv/bmqdmCsBctKUqb9T\
+                UQ4LklNnaLmuqzTeVb/5pL+VGv53pErvyYBF4CyhoADBXphHl0PTLUc+NWmHJolubDW9a09KlUdnO1v+2hCAi\
+                zzZqqyoimG5th6040Gl2nG0c1fqajsv3O///zv//6Cqf/1NF41b3GIKWnf4rHduzOb//KF+uogAiDTtR2ZtPS\
+                1OzMV//tSxAaAC6GjFCPlsEETKmD0F4oQpqspcIwrygUDFmqJw8FaFxZFv8qHkl//2Vl5JSY+CZG6K9v//9aP\
+                //9Rdb/6vrOBtCdf9GJ6JycTRadGKG6qk9GrRJE90n0XLrf/rHcUn5MBwJ5gADCdgCZ5NCvJzWIsZixmHQjw/\
+                wBKRLm9rqEcv/zS5l+jXX/VDfR6f2+nK3ZPq/+Z//+mUgp//Kn1ARE3qK//LFpMQU1FMy4xMDCqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqr/+1LEE4PAAAGkAAAAIAAANIAAAASqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqv/7UsRxg8AAAaQAAAAgAAA0gAAABKqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqTEFNRTMuMTAwqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//tSxKGDw\
+                AABpAAAACAAADSAAAAEqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqpMQU1FMy4xMDCqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqr/+1LEoYPAAAGkAAAAIAAANIAAAASqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqv/7UsShg8AAAaQAAAAgAAA0gAAABKqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//tSxKGDwAABpAAAACAAADS\
+                AAAAEqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo=");
+
+            var audio_lineCompleted = new Audio("data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPA\
+                AADTGF2ZjU4LjQ1LjEwMAAAAAAAAAAAAAAA//tQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAACDAABrwA\
+                AFBwkNDxEVFxkdHyAkJigqLjAyNjg6Pj9BRUdJS09RU1dZW19gYmZoam5wcnR4enx/gYOHiYuPkZOVmZudoKK\
+                kqKqssLK0uLq8vsHDxcnLzdHT1dnb3d/i5Obq7O7y9Pb6/P4AAAAATGF2YzU4LjkxAAAAAAAAAAAAAAAAJASw\
+                AAAAAAAAa8CnuGd4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/7UMQAA8AAAaQAAAAgAAA0gAAAB\
+                ExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+1LE\
+                XYPAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVf/7UsShg8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//tSxKGDwAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+1LEoYPAAAGkAAAAIA\
+                AANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUU\
+                zLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVf/7UsShg8AAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVV//tSxKGDwAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+1LEoYPAAAGkAAAAIAAANIAAAARVVVVV\
+                VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVEhPQ9nbDkG4DkCQDgVEkU\
+                /zTOs62IWwvA4Fg4PGV52IaCCYVrjCJt++L3/lgwPFixe+kJkS+M4PJk4EgwMDzmxIEgEAOKJTgLH8Qx3Xr15\
+                mZn/r3/yixYYGBmZmZ+vv80Xr168zMzMSxLAgBACANCZFdevcpRg4JAgCQTD87MzNe/9FhLEsnmf/7UsShg8A\
+                AAaQAAAAgAAA0gAAABK/6U1YsWLFixYcGAliWJZPP38pNKTc7JYlk9/bywcCQIhMqYEwwWc2vfoZmZmZr75Tq\
+                U7btr3/vf5pRYAISQACCCGEEB//5o52KNX/zhyiQJMn/3AwsgNcLtFwC8AEs/4G8SAehcACj/wNSBBusAQLA1\
+                I//wGH4b6AMXA0oULGP/xiBcUSYGxwA44IT//5EnIARASUYQgh//+BIQHxlYdAyogGGCxlD3///nS8QQcBTJ8\
+                ky4sxL3////5oR//tSxKIDwAABpAAAACACgEAAEAAEAzNy2aJk+cKhEC+6Rr/////////k+OMdAyEgABuMCEA\
+                CEwFkQCAQQuSJPLGXU7zjokB0jWwSspMdrEj2ksMl6vJU4ZuXQ6RoJlBQMwBS9JCLEMrsSrNwXu5zdV7sWwnU\
+                DGpzNRHNFR41ME0Iq+/wE13kAe6cH9zttca3Gan4U7Z+6/UGvpl+f//4U////3////9P/KM8KtytnhX7/P//+\
+                94LNJrs/9aFCRwukOf0f5qUDwACQy3V0rCt1hH/+1LE/4AYVaxeNPYAAmlCJKc3QAAPslaqpTAsAmdEJ7JBWW\
+                UsRfy0UiLC1ALIABoKDJponqZcLxNA3WIsbE0k6Bs5Oh+IWEC4hzRwl1A2kyWSKhZAJ+qv6SZdLqIkI0S66v6\
+                /6NReNlOkXqibOFu6qm39K6KKNaGtFSVLU+2vr9LWx9Aly+plP/ZdbJPRU9qmdGyy6jSNky6i60y4fY1Pk8rX\
+                Ni4CNPGwIYNNVXJIfy5c3xvCnKoZK4YHqeYf6hq01b+a2a4lFtcN1uttzobaCP/7UsSvABLA7Vm5nIACYbRp6\
+                7NQAhS7WJ4J0AoXHxz0zoyQ4KpK3/r//UepDMZD4O6cFf//8NStISAJmN1gBwHxcChYJbQVQDQQuZorHGGwxi\
+                N0n4Ss2NC/mj1u2PgN5Zoanm8ihJkx7h5NJ50iSJAAYxWS/9ZLCShxmik0f//o2rNWkiHDVFWSogsBMTy0AQw\
+                yVhj7ui0ByGVTrdS4QmBYSBMJfE5GpiaAFWCgh2GFbcsBqZJmZNq+iQWotoudUkkTQgCVxShBEG6BOMV7k0Ns\
+                //tSxHWAChTPZ6e1VnFCGWs0zDUeCH/+1SA8BiE2zprZfsvAVBveIVxQHAOJUqJbqD9poA4grAXUjHApgN4Yu\
+                Qz9Q0DUi77vniuZDmGiv76RcK6H/7NmBp//povpv//+6Fk0CDv//////////6BwnKNlTdpdBFyOgxCO5dotMW\
+                LsFixZN6yVEOAookA4BgiwkQsy6xwRcaBFMTj6hztTKLlkamqOpcln5RX84f9S/Wfb///+o1/2/2//////Un/\
+                /m38lIgAgC0lSzGDlQxEI7CL/+1LEgoAKcI9TtYoAEUYwa0MxAAFVobJBladLTIrjmJkL+zJrHINyJeNjZFFE\
+                yUDdLpq11OSAnJdPv9zMOJGPg9jZ0Voouj/0TBL6P/////VdGk///////2JqKkAgICVC0ZSpWV+xwCpjGRP6e\
+                cFAFEBmZSEUaaakGWcBxOO7rQDCsEgMaCI4AjRa6BAgIDmDERaCJDb5DqHIzE5FqzdgaFTMVBL4eMtLAADfKt\
+                m5qXCAuURYTTi5SEdB9fZA4QwvaQdYBSIsmz1orZ/9LV3X///7UsSOAAo9ZWQZhoABUins957QArPUTJMk4k3\
+                /////+ylkNMCBA0bXW1Hs/2gAEC+UMGEDIFMtMAAaEQDmLBrnlgYmGIdGA6bDgTJfrsEIBGCwimywgAoJVUB4\
+                FFg0yqLFphJMHKMjhuHZqXxlF4zE3IgWljMYjU0+4XFhYJ2DQHO9GuZ6o4YQRyxpolaKSHrekZGQkwkFUxqA6\
+                kqaVv/9nTTuux9J7rXfZTIuZDsMiQNUlVb/zn///rX1lZ6PARCW7oD1kKEs2MLAowUFjES0//tSxJiBEbVNNM\
+                5qEQJFqiXJ3bXpP3LEhBBlMWAJag4NFnAIEjGycNjJUIJ4BgUCScDQiQU/gbQQGyABDg9AlUSQLxUC3YFTQrQ\
+                cCZLnjIgAIBhsRgKARD0VrOOkOoPGsOsPBopNJ02ZalThVKmbk0TRNp13W9X9V/Ut92XV/OLJ9j3///9X+3an\
+                M5NE4gmwAAAgsphM8IAgNghiihmjQQPLeEwdKMzAsWKD8xGfY8aZ+rSYJCXjHwHgFsEjBtQVMdkdYuMToRozg\
+                VSYLUgxYHH/+1LEZwARiVEwVcoACmImqmc1AACeFpIuK4SY+BdJUTswNF4uEuv835BC4XD6jcMAl0mTU1/mhX\
+                MCcGbMjRaSLMgI5b9o4ETdBaZfL6YdtJ/o//MyLkHIoQAiBgRQ0PmCljkkcFykjp7/cGKAAAACUAIFgn5R5Wq\
+                04RgHCkDqGt01qJVxHInAQgrGnxbiABvjYfNy8OEDeBNyCityQCuJ4X1B+kUhACCVl1mrRSf61sOELkTTVMex\
+                85WivslfZf+paJqoqC8kxNv////rRXMi6P/7UsQygQ69J1NdloAJ4SmpNZaPYfQhkqapys6aBaYp4Oyb/av44\
+                AABgkRguWyr6A3dTFJWwdQX+vt2nFKTF/CLSBUbIZTTNiZezFxso3H0TUis+b1M7Yne7r94T2KRzyq2K6tTPK\
+                GlbTO636YI6PFGdNXRZJJN3Z92pUqOtGpbqJI8kl//1o//9kThsfIB/WKDiRLDkzVWJmM9Q2EFVbYCQGyi0qk\
+                gpGU5jfWH5U6QfSVMltjwTF7hGUJukW2PN5df/Fm9DL5+w/GCD3OxkT+O//tSxBkACikXYaeM9nFGKew084p+\
+                iB+t+eY/yeiV0eYVkTxQrf+mqOUT/+rKxQuBDP/wsyyFAFRotqIsSjTqb0I+S+lOOpxbJsFBPsm9t2WhyA0mx\
+                DYgKkzroI0Vp6F0Hm/UPNZvoo6ZZbGNzP16MuZWxJjRAJB3/+j///oRAM/b//24gqmMhAAAAAOxUU8CJDxB/o\
+                GIEJhMhxLnFBHTFxDQH9LjU7kVGUAjEiwSB8olZ6lFejtmSlFQ1Z/SZf/TvQpHvb/rVq9Bk1nzImTX8WH/+1L\
+                EJYAKSMtJtYiAAmimrLcy8AL/4iCr7v+EyAQCAyKRCZEmUkmpIAFhQEOSViEYuGYeSr0JYce9iDjOlk3WvPc8\
+                L2i3ibolPQVgg5fwYbAQy+0Dgl6EQzrNCDXKCWvMnEMUHfrgcwXOT221OrX8djf4yprjdECVxJNyTxJFJHp//\
+                wMDfW+/yhi7//v+yZvE19bSIWsvCgVrbF9cOD2bGNPHkS+/e+6abLSyT2vB3mtb5gxdLSpA1VSkQS6JxJ9K0F\
+                kIJjHbLmwK2kcWm9uDMP/7UsQNAAog32VdlQARRhRtNYedOo08UTspKCcJrSoegCyW6MwLo1QbTSjqcf1UCuI\
+                U2f95zfP+cccSCdrb///5xhCNO4Kin9fpAGuABhtVytNG8W2gwUBvw2MkfG+v2OmfBRo41hJMUHfqZ5cb6Zzl\
+                BzX/tbZUprL2bsUW6278KiA7/6c1ij+imCciRX//EXh07Ez6th2hg935YNmqoCqlkkjzigCpI02gsNAqTEK4t\
+                WIRU844YMdwOVz3h+Tkr9RsN4mOv5YjiUKzDf85Z6If//tSxBmACnkZbaeYtjlQHCx1hik+2CybmO6VWLEBz0\
+                Fm+RBcOjiO3/1XQn9Sl/2f1/rq4gWegABMNNuRpAN2T6lAWnoNU0aehe3CikC6pkGTEzhAJzbmJRl8yhltw1f\
+                /s2KOj1l5QWneev6EE5SQQYVxQzucSMRDUBg023/3dzzS39j3LYqz/GAGoBRrbqlkscD4IDKDmhigMypNsLh2\
+                lTGIltI/M2WAbI0xnBlPcdn9ZNEGJ+jjovHlb/OOqqO+qTjQhCWQS3/zVUZGv7GuLhz/+1LEI4AKAOFtp6zus\
+                UgjKyWVlX97BA//UCLa/+qABC162CDX/fg/j2AGuG87BXEuKyVnhTJWp/YFTFBOiXB67mGtfc+i+WZyr6LDZF\
+                0f7asgkfUlhUoREA+xrf7srOFj02qwxxZi310X/9XGKLlogACbTabjqYDY1ryom9PpUBbwbYAoYXCktCCMlWS\
+                sJCtxl5kyruKNUHKPnHKecvlZBz1vstE1ICZ36Sp4FzULEjfq9z3OPnOf7Tybs/9f9733H4q2AAut9KEFl6HZ\
+                PgB+B//7UsQwgAp1FWOsMOX5RxSq5Zegtk8vqiDdeC7stjus3ksnxjBnE0lXmmS6+Rt1UR0aOGibPZUGBIKku\
+                a381UTaOlOO/kZYQGgALHIfy0icEGsFzrGuZ/lCNcEP2TbcSApWJZnMtpLaSMieTT00cuQnwmGIZlV+UWm3PX\
+                Lpmf/QgaWuTs5YUPIWzOOCEdNR0N+pT1FxVlohAFABwPNNi/UMJFgBlBQ26PT/WoiE8AJNWmEJMPDJ6nRtIQo\
+                S4CqA8Yx+I6KnUuxMds+GmTvPVnX6//tSxDuACmijXUwk8PFAFKpll6DuEbnYXJU+n5cRCXaqtHKOFCuev+e7\
+                TWjv6u0EQAMg4N/GAMRv4gP6EK/VFQZVgEllaZQmkdWFEPscBIyYFkL7GJE6ZifKo9k7bPsO0a2ljoLOcceEV\
+                HqNCyu5vKlkJI538ofOnEH5Q6oCiSTP/qqKPEXMZ9DZQoGrmf7CgFwSCkcacsrgDxCJE2X+jRaGOiFvx1jJox\
+                08E28ns3EwL1BnuQUbRHEPQJOzUfIHFC3KXZVcTc5qDC/KwqHhQVL/+1LER4AJ8N9TLLzlsUWjLLWHlLbmf0z\
+                vKzCzfRXYh9PVf/88o4zALbSW3EQKRYeYOIOGFCnxp226+Nl3BUZ1H3e797mlgmKV7+aAXoJXVOkglXUKcMDy\
+                M36j1VIMcf3TrAgAREUY9rFb9dUvV9Ejp/5iMcqX/9CIAAgGnEGZKAPMGz2HDx2QoT2+2/narx4M9dL6ekgGR\
+                QndnoKfxKhzWBoZ6TrGIXjp+VfdJzUnGjwTmOylC5lH6u9HPL/6HE2v3f0g4F7AHVkm1EgIyms8J//7UsRVAA\
+                ow31lMlRMxNRvp5aGeXgFSKiZ5F5Nx0IpDMMPBK1Qb2eDjZMwUPv9iZaGtmPuORom241VZn6ziL0c49tbTxKj\
+                jma1s85jGFBpoeYnyxJrf0//9hwi3AzFSUknE2wIkXZjw6NkZeBLSAmkwZAzHGHtHlt5vesxQAGTGCgtv+AD1\
+                If9zFau5NxZEdaFXmAUpTr+q0AcHcv//KIEZU9BIohIUtBlnqSRBuoAUUA2v3QMwbK8ZlRaTgTGVA87hoftB6\
+                1mvuQ3967D8ssOj//tSxGOACj0ZWUwY7zlGnCt1gxXmeZ4wbPLHUUJbmODEuThQgRw8f8pzmupFs+h6BdHFxp\
+                v7fahLSXLNUgZF/4BDsBsHLbME2y6GTQeMl+15xVVZyEbbfWlX9P5r9YPIzeQRe6NRrv5DZuLserSC7WxAImE\
+                mQnoqCLPJMfqhRATApf/9LiRRj2CpYAJtV9pm4kvBFOxWtSONgB+gMNg6k+Gwb5Un0uAzDHQITB+i6iyxdX0a\
+                R0IQkGc2E65S2q+jpmb6HozroMAY7EZ/3GOtGGf/+1LEb4AKDMtVjAj08T6ZqiWGFk5dCsOB5XRv9MxVCgDfn\
+                VhF6v/DFBITZdSjTbAexnl9KGWtfgRmb5df+j6k40xO8el3fewTXlkM7ReASKtvbkny3f8q2VSX8mGhrxv6me\
+                9H/Zgwg1C//1LCs+sgMCHt0V///RYy1cGQEWrYH+LWUwQeaWo6SHFlMBqotXzZHm8NzfUhIF6tiqr5uS2m/ce\
+                o2u/k2+L/Xv7tc0oRzf5gogQzXAlo3ftUGFQhH9FcDKBWOvR95dwewVWKv+gTIP/7UsR9gApM4V2nlFZxQyMr\
+                NYMKlj1BAdNAS4rxkh6hGQR9BuOSpQF1UT133XLDsa6aWGJ3HE3XGTpbtQAnFPL1X3/Eq9NunMVevezB0B01R\
+                jTJjw08QWoaCqxcX/8ytQFHrwKVkabpi0pQmgwDRk21+RkhedCWpn24IXTf5UgpGwXLyu2XB8emdWez9yH6g7\
+                mfQak40HT2RHnQou/vEBAGUay/qYCZzKFznFPqgIQA1AIiA+6hcTwzwFRDANUu4/UosF/Pp8JgswjEqwMEcnZ\
+                9//tSxImACgDfUSwgT/FGFGpk9LH2N0qQf+6tmrY9F8XDVzjlLAERpLMHHXVjzznwiLfuYEHkdrL+5fUTLKj4\
+                gZ+r/oQqwAAAJ2/4CWA0Blgoa7x2rJgxhvbJKjFKdMOHXbaLOWOwWl4qOZudruD//0Dkbf/nkCwCkz48JwR5y\
+                Hyf/LN6o729PmlmASGEf3a2jLYSBQRVLFhEEyK5L/iuggErdqEcYevARgpAyrAYsy+WtJe/S7ZX6iNnV2ok8y\
+                Z44OoRHDq9apOOWaS65VltufX/+1LEloAKFKdAbLCwgT4bqWT0liZMZmhLhFb27dpKIWKzBKLZCEKnjMBu0F3\
+                OnzmRSjhQILHsgi5Sv+0uXgSlGwKy8JWccik8CpzHACWDgjWFfpxvgxDmAewNJwdMqGhpB4Ub27Cfl9eVNQn7\
+                jmOIU5qIr3GmtxVcz3LDustF+ERxh4LkV1vT/45hOBh9x/wUI2nwuT/4TOIAASA1JWBKBwEvU8EBIs6gcwSxl\
+                YPAaAQIlY8tQ5y8LojwFFFtOCSxoo24nSQwr3D+DRawLVU2h//7UsSkAAs0zUFMmLUBbJmo5YWObhofzNS7iE\
+                bCL1/9GVeQKnR9FaCpgNjCH8VS+gJAsw9C3/ZVAjoIky4wKBTM7TCgdOLmwRhcwghAfSX3BLpzgyoxhCgowIz\
+                KBaQ8DAEEZoTgr+JNNvsqYHzk5NtzpIflW1zAZBYHYlWfpVFAPQTHoNuaWyhzR8r/Zh1CszE/1/1ty90PaOfl\
+                FXnaaYUPHHL///1wAAuC1AJkswBAeZ28JLnpFYFJzDxgBA8KYqUB0IQ6UxdceBotH9LSFCIm//tSxKeAC1TbO\
+                m09C1FqFGcprKC4EpVEpaKADXtLIHkWHuZ+HotgvH3Uq2c+IzkNqaOEC0y+gOwd7HuyJuZHvZCForJVRFgbMm\
+                f+5QAwoALKlKAI3Z3YoD3IQhZkIANha6SU6ZE+jIpaQCLdG8m3gbUskojLn3pXSQ11jlNsbprk7nnp5mgw6//\
+                SUx3Id+cWEHPRm9DMFLZ//+jFHtoZHKJi+AgGpaALa2krzvTgs0dAGAoGCD4MnnBBJARAjZWnNcAgIpBnMIpm\
+                RlUZWfOv/nD/+1LEqoENzPUuTmUHwYSbpqm2ClhDLsM/oYxbkXfr8Siw7fTvRck6N3f//dK/1ATb+fJhzk6RV\
+                //PQoAffZWAjTtagAAAgpVgCGVhiAGD+rkHtBq9GTY8zXSmiv22vWAGVEwyS3Y5F0jxoXZdLhADeLNTgRXGFm\
+                smz6L4HiruFFYxX06q2hxIuhnIMGAYpDMze9etEEHN7GGztX2AjJCBSMQFAg48nCombk6GBQI2ylOUoFJcQWu\
+                dqMnOAdZ0cbd+AhAm2mXDmWjOzY/hiGSiDv/7UsSggwr43zJtpLZBbRvmjbMK2dbfZ1ByaES2ECaa/f/zJvfR\
+                0+cNI+XwaAgna7ZN3/HM1pn30b+BCIZ//WH1gAACY4BKBIDkBqBwAAgxrBEcYBAcFAzEzD0FQliQWxULLgBpR\
+                EFi/bfGLwW2jcdqqoSS3nbgFyYYik/8spaSBcdKzteqq6X3/7qIxsel9NqvmLNrnh01UOi9GpYUnTh4Mw0iri\
+                93z1X//FRurd9xaRq01BMG4joCBcnjA4zlIc33Vsmv8ULB5iOLNxSVTmYF//tSxKUBCyTdOU0wsqmBmaZNvKy\
+                4Ho055cSCpdWlIyPGYjBc0+CZm+96CmDWX9RvTLsw/9IMTlLb+fa4aPay2q+h5EGWFP27V641W4UBdz5r/8BB\
+                RYAAQS0ATDfDIE2hpAgdRaM2SQQBj8PkpkahvaYEfEE50yWWRx9piJr3pWTYEICL3Ti9QJWZkzRrTn5VaMgcM\
+                L/oXmUW3Kx3Di2HEz6PAYZxyTLa4AAXb+AKiVdKcLJe4z5gZOCkxZN+y4BNFKEHIHYCi1VicEVCUVV+MX7/+1\
+                LEpgIO7R0u7eVrQWCZZt2Ujpg4MEft50su3oiMPc5bqpx7qn5g8jlIOdtZlgMOFnR7/20dxAr71sKKe92SgAC\
+                pNgBKEqRkEaxwKBzJxUxwg+Diz+CKENCqERhn4l4CUPk+EsjhZhGKrNWTCLfsSRFXjeL+nL9lD9V5+carzjyE\
+                b2KDBs83/6MRy27tQo9UAikAyTcASpd6GxjWqDYAhDpQZBK0teEKoeAYJ7tNhhKuxVl8qEIQAza9ahmcfTJ+4\
+                sczukSZXpAVUjM9NVVKgf/7UsScAQpopTTtMFKBTZvnKZWWSYsW5NTvDDHAGD//8o52ZkIoAAEAwNxAZYQ2W3\
+                W5a6wA3QKim0VvXay9tW/p78mnmN2pxSWNztIxhSD/yCloQH8onh6tzPauumfbEssUy5R744nuZM1Zm9tfdU5\
+                YehBnikozPT09/W7qBAhTnNcYAAApIej2AEANjGAB8A6Jh1yzRxoO7M7AqrclZoaecMR3XFjcpFgzHJ+bzWA/\
+                P7q2J/+6aTHHuuqAcCmkMIfMrGdaHR/oJAYAnOKlb/X1//tSxKaAChThNu0YsoFgHKdppgoRZ/1QSHwplUAAI\
+                BUmoAiSX4yNHdmYNCQUsjQpqrkecSSXQA0yIyxCqqYYTlw/IIwWpe91nCkcoca1zg0QIjlFHyi4fFivlFWMx/\
+                0YQTjL+8gdAk6YexXaCLcG00ICNLNO21gAoQjLeNw9CHxCNm3zJJZKJKlUNGZiunoYyMBVAnh0FBBXkxVpbtq\
+                9Ok0yv3bIoo7NLXlw/xd2TUeJXxqVw6NQNt7UstFkoYY0xlQAs1gCpACrzCosGhhnaSD/+1LEsAAKqONZrCxT\
+                eVQb53WkllmEALO4EIkNQ6JMZaqPT3mDQGLN3Z9jIJy0KmfprlA6U7dwNAYIoRBWKks68RRlfuaYUyz2v7xNz\
+                sUfXIECxT6ZY7kSiQVJYALLYBgaeekMhTMzDNxjKMT+FQvAgRNPBhAQ8hJIqtPvNKpcBAh4+kdmE07o1PsoC0\
+                fBkTqGrNNHR9SOqZIqvjkatttwdfSewi5IUup5Qn0oARkYAljO4YOKITBCQ5IQMqKjRCk5zZwQUFjwa267UBR\
+                ZN43/nP/7UsS4gAp8ozNN5KXBSBSqNPQmTnWHrkZ3ocmW0KsWse3Jyq5d7V8CEOGCsy3e7m2l//7X+bN63FsY\
+                WCIu3+sj1ANywAZthZkbWEgkSOZATD7G6BUpN8hGUavKxr1UPB2S170ARss6VmvRDU4BwLiVoYHJI2u4mybW5\
+                +VB0o5l6/4a79Ufj2uyAgBog01c3sfzqQv4C8VQAGiprDQ+4TgjjOQEIQIWaCqAeiOAiM9PJhYkS/zgUzYG4k\
+                zT+Q1IWZOPMZ+MAQLAazPUg0FhQuq+//tSxMODCmCNLG3hCUFMFCXNrKDwcSuKPj//SZjayBCL/u0YSliVfs/\
+                rATsYApH7CwOYiqryOnQhRFLiBmYmSEEmLbNxFRI/CrXej0JUPTOFhR5gctvM2k2HmE0JH/+E1WanGeapYaG/\
+                /+93V/DByv8lNy1ADTn9fw3x9QAAIBLkgAloyFeUw1AcInqdmGbGbxHKuKgmPWDiaQx3FeJvAqNb0IUPdMOYe\
+                J+nDfWVrCzu9DAVmCrqlFlkhKLCkpHrQf6tf/DGTw0Nf7il0HYMCI//+1LEzoMKPKEsbeEHwUST5c28oLA5cv\
+                ocMdCIvligfYB6SAyDGQwZQAmenxCzGZgxOVmBBJgyiW3gMBCIQIo8G9g4YHsuWDRZDhISBGnz+AgjBF8kAfF\
+                5RN6udCtdhDG9Xe/SbeCsbxbPZ2WauX5Q2Bizg6Yr2nUJBcQFs4jHjELGPpLcEFIyaVyNNCQVEA8TZr5NutNI\
+                KEUY3toofweXdQqBhEbEvSRBIyoOueVYUSjRCAhhy4AxnbFDIInVu0wmb4cAUYQNL/GvupiBXEgDP//7UsTbA\
+                wpgoSpN5QeBRZRljbwY8P2PX7vP/6QpgB9GVBYHHRiOBSoc7FpgiRiK561ymICQC7cQgzCM0BwGBGjCNcSwd+\
+                NCwAe4NdjLtNxVuiNqmMAkCaH0E1I9Tx2GjA92jcqoH0k+Vqio+EumM5v+KlqK8EnjvrocLz7igoPGkcwOBzK\
+                zyMWkQz8kTxEF0mgmG5DJiGScGTDEiMwwkoLJ7pzLwNaBDTLlsCaHMg4LGPlmXt1hu908cLSHUhKcW/2xtLJr\
+                //ihSQxVP8VviILm//tSxOaCC9SjK01lB4FhFCTJtg5YCjhTQOsJ+klytACWwQXOOmfhGEGhWppmprsITcHRR\
+                gSkoi4KZMCBqEVHPMwyCCqBMBDDiMRqyRnqPVTv6GwPJj52P1mPASqvM0TmFdRMRhnjdE0FqlcGfW5d6PDjJ5\
+                vmyQTBZfZVFCAF9GARUZFfYWHQjrhktQmUlibQC7DDDBBDCURAnMunwZTJmOyxmLChYsVDDC1LUh5KIRx4Zbt\
+                vjwswZ1A0HcXqmwgIwshSlvV3F5XUf//Yp3Mp1X3/+1LE6QMMGI0cDmhpwXMUZEnNLLhhoXs237tYbA4AjBCb\
+                7mBQ4NY5Tlh8z2ZA5YYAMGNOBsYiDCBg4DFFYp9rrOZu6wXFgYbKTLU1e0lbSJp7nY6vuA4bs5o0uIAOmii3X\
+                IqKqq9f+rP6QLjI+WlFERv/1I//oQXAB+YaeI0x/BqSduEg7eKjGfcLFkjAIAOo0yhCIvcyezjYJkk5XVUoGN\
+                RcN21WSBKUmfi2N2bVstxWT5Ga2HJACwbIqmYeQMvv/vbvyLOXW0nkQgbsByARSf/7UsToAwvooyAuaQfRd5R\
+                kzb0kuHioiMIoIEGM605DEI6M1BQ1oRTAogAiuMDgoUGCzsKhAZPOQdATpIxmYWBCNeX2ZW6jZpQZMLG6TOA6\
+                OCXjgaqO3AoTqBohH/ECAKLBkdV86Km0iCkRHHliEEc9+3/////ySgvkBqoJBUIjM1WqZvqmJfnAAntpluTL7\
+                gwGhLMoSXWJATaEFpPMylJIUFk01yUZGgwOuZzvyTqDImEyDv056yDq/Z6BxYv29f3fmYKvzuOSvmfmm3Gszo\
+                9+//tSxOcDS5SNHi5lK0FslCPFvKFqxv759ywHWFUpLAGdEyFgNN/nCIENINz21JCeBagUs8hr1EUgUaMXFLj\
+                TRU/wbuCzXJeSdpCYtzsbN6RxF529qHRnGlDxGT/KPhZm+ZvnqZlSL+tnERgXE0JKHt0XURdCqwAg/HNIkfDo\
+                UVRAJmRJIMXTJ0MmC1JmORgODFnEF48CoEYISZkuXa/YABZLNPraTcBBEKytUDkRiWYYHuwxCGPpBTymO/1Id\
+                XK5klvQSF1HL//t/mP6P/r//9H/+1DE6QMKvKMgTeULQZoUI8nNIWi8sIQMAogADW7AxAQA+YapHmn4poReBA\
+                gA+hvQdFAFQBBioIFTRZm+8zRBBSXochyn2KoAoHPUnazT+y7GtW7jcrzGWJlldxYgpDf0R5oQiNrIGEDbPJv\
+                /9VX///6aAYAH8a2VAc5ajHWAUYSt0M7nTBgAFEIY1HtAqGQXJ1DEPTTxAoFk41oiEQMYTgcaSpS+JtGHRSew\
+                sFIOTkSxkvvTF78SZ2+wEdjAqatOPbCGbo1A7Dt0bbc2mrV///tSxOgDS7ijIk3phcFxFKQJvKEw///9H/qBu\
+                TJumOOnpjBZcc/YZRIYUma4aYMAAZs2oFWoY+Gl1BRLMhB1gmgtIXkZiTE0A3dcqvl5II3lyszT7SSIS254lD\
+                gIoAtIOepUWIRVj0/7r4Hoy+ksLib//+r///////XVAYAIxFjCAqNQGVBgyxQzDKGCpBMNAMwEDzHCrRTQxBq\
+                8IBBCU9A5nYkFKwCEsaChnlnqYDQ3jIgz377ceaw/XLFnud+N26k4X9DM9tpdzYi8sMEosoL/+1LE6QILeKMk\
+                zeSrQXMUY8W8iXCv+jV3f9YbIBCVKGWGxRYFxicN8xhUNGRi+Y6Fhg8BGOHELM4CBSS+LGxFCMAvBgBRpDkns\
+                ZVCLSakviyiYhAWcORJ3Lr0vfu/JAMLgKCYXimWSSDS6n795najnGJpdUZY3U1sz/t+hQvACEtSQ1NFBgQFQ6\
+                5VQwEAZJGGg+X+MOqQxcAEB55ZC1SCwLmbKt1xGcmAAvHOBIHaoyaV1rvXShmA9VXi0wdEJmu7lGpmvj02N3Z\
+                i/EVr/7l3S//7UsTqg0xIpRxNsFRBf5Pjya2hMF5//////69IPXmYhQAGZSeYFIh3VdHFNmgVh9hhwM8A9y4B\
+                rUzJxGJOCBTHlyiqyAMVGh8ASi+shXOdNmYggjIaXpxtknIGDmM6Seoffufx8osQKgR7HgUBf//+v/0//0//W\
+                gvACTJaCEPBKM00/IjOThAQY16smUGFmEdgsmDiCmIjOiAogov1RAaCAFkRSoCa1mzxICT4ZyaCYAgf2PmCCW\
+                UUJ9xkUInVddJ8XUw60zpRr8Ib//t///////tSxOcDC3yNHE5oa4GGlGOJzSFo/3bAte0GghiAQCBkUSDOao3\
+                4RNDLztwyNGQl5O+oCDIUFEt3zShEiJXFS+ZoBBMMgqd8Gvv+qSK72VwsPEj21nW/eHAzb+cabTGMfnWzQqCD\
+                Xfy85PUDcz/soV5T6/1P9FUKQAnEtzC44QQmBQYZIpJo6wYm4mbLQcYCvOPmCHMOSEvhQuNNEwcAdct5yqOBz\
+                sn+j+x9nBhwDAk1eZAyvOCRjn8yy66xA98/TI9QNjUUKJ3h4QOS5SjX/vX/+1LE5gNLdKMgTmTLQWwP48nNLL\
+                hv//9X//f0B9GV6AUvPfIwuAm9+hqgqBIUHvIhBTRKkwwfUwJIFoEsSwjc2vtBREBhACSYesdv3uQro6vVGi4\
+                yLSnvXpUejKv7wzrNqgQVLqDLAIarAAPn//s/uT////qr/UoLgAa6IwYsidQ3GTBpin6YuDARcNqHV7AEpGoJ\
+                PMy/VKSrsDtkkpMwxXYKCDDG4wXLppUFuh+CL8a5T3F5lruUHrIbkPlPL32bQNJBYCE1RcGjn+5Tf/u/p//7U\
+                sTog0twox5N6QXBepQjSbYOkPu9H//SkWn5mhGNDM6bCo0NdQoqmIwoxDWZTCoTIAxswyGBnBiAcAJDxn33Xi\
+                ydKcQSB6Q3kJj8GMHpqtuJZS+bnvHZQSizoaPTvL07+/vUUg2ODq5oETWv877Pt9rFO/R/1ev/RSpW02rLYYN\
+                MDRDBxQw/fEJMYEjEcMEBJi3FYb3JlL4bwF7NPlTWZYQtD0tR9qUKB1llXQjzNqHelDtPlWfTKnTYoHD5cMn+\
+                2Bdm12nOf0p9JBmn9P////tSxOkDTCRtGk5thcFtDiOJvKVg9yusOgAkDJSy5g9AjgVNf74ymJjJwiOKmoGB0\
+                xBAS9A4QWtBQQdWmxbhBtpCBbfjsADlHIgZ+GiBAJ3ancAcGhWyt6gfPLEh9HP2Sh4mnJJB2mSMmjcWMgr9//\
+                +z//0Uf///pQHYm2pxsSZIJQFwG+TZkSiZYAHaQnGIDiJqCgpAiIm6AQlRM5lbyplk4N+K0QOEBt3j3Sxs/bs\
+                2vru5AtDIqDYoQU8KzcYJfs6i2nYvZr//33fq/9G+sKT/+1LE6INL0IccTeTLQYCQY4nNITAAZYXXERIbVErJ\
+                PtYjJ8dL4+g9JIguGpFNIOWBBXQeUjwFY4OCwpcBVKhll2lnv8JQ+haSolghkVcr58rYkSl+kOUpOjFTgPGmA\
+                NpBEKnnfq9O2z/Z8anf5X//v/YqBkAF4GEBJhZYR+RgrSZ1LGQOJKQGSizDjLSgzQIVjM0gQuACBCMeIndxur\
+                kC5yhXcf6aU6AxXTXPOTQri1ZU3z2bdEvNieSFhFj4+USnhzRndtzuJA0lHd2N48zX9//7UsTnAwsYZSRt5Wk\
+                BhA3jSc0lKK33eocJIQoQkplx0XBPGIDK2zZ6iFWHCzK9wzIhkYlkWqLFQKEwMMaAzYuuLBWmLZbA1xMpCqF4\
+                WpCUEiHvwQpAYh43ulv///Zp2ahnvcxv/KNFtp//du/0///1fs/+xNUOUQkLhgACNANUqBW/Fi0z+aEudO8GN\
+                osyqlEVrLAaMDwih1l8PMRBN6crW3BWqSQJj9s2B92xb+Ztj7SGe5fYavorAN0sIlpQ6fkw4gdOMcL6/+zQjv\
+                /Z//0U//tSxOgDCtBnJG3kx0F6jWMJvSzof9IS/5G3McJWPJpLmTYQiK/Jp6UEOHmwupeyBiyOLzqVbBlRQgA\
+                3iTzVznUXRmygckUOPY+k62ztelHXsoaRmMwT/9Wm9NiO//9CAEC4i0lAsNMBPUyECMxHUy+Iyj0Bzl+GKAmJ\
+                DsmMMEFlyVJwBqNESh6lGiA/+s2URMYO8wGCj3XK5TBIi7RcEsLjyaTgjvyKfr6Urf/8X9ltGjxfndijIbRQw\
+                ZHBnNnjoFMuNoxckDAcBNeQAweMACj/+1LE6wNMKKMYTbEUQXOUI0W9GLrlQMEgBjEQBj4GEhl6jbYq3yfBlJ\
+                uJDzhJmPeulBqOyPODH8ib6vffX55ImFzm/4eTqCm3w1e21cg2XcQIlumbcA5Zzo3FoRrKEVkK5jr0WfexNuh\
+                Wb9UeRUgVsQBMzaX4GDBvWeZSumYG4L4BoAMEUw8CeAx9GBQIZJIZev6VNJR4NiKGKrdGzuOqrIbW2PMCwtRn\
+                lUbZZwEweFQoxiihMfVFuzp+n2X/c7aqfo6vts9Ho+oGRIomBZWhYf/7UsTpggucaxpN5YrBIw4mHZeVHM0Qg\
+                QBPRMhAGMZqOgPKCRiEAfLhhFkeKlU+EfmP0txVYLlHUlL+Qto7cZH33CgYUDIL8MgF6uVCDo6jUWakcJmW4Y\
+                dutdRb7fUX2dCL3/1df17/6akwHMkIFFhxEQiANH6kAGAxoPgpAwscCvYauJRNDiBikCKpgYiyZmUByAEjQKQ\
+                I6ggXuk6pi997thkyKCRlL0jwseRXEwPGgWAzQWcCDQi5292Y3/ixI3bV7Eap2zaz1OZZbLt6PeoJ//tSxPSC\
+                CtBrIO08cIHFkKKFzZj4YOXgFQqZ4FwNNRzGflgamW1MUD5CUYjaSDTExw2kaBGpwDgGKu810iBFVsTXJOw+R\
+                MtTWvVulwFlxehgemlW7NORMfTaNCosKLrcZd1SN9jv2zXQ6j/+6j/5bWjdpW71Kk5ESQSQdDTGU8IBzJawhC\
+                HDoBkhO8xqoamA0COSx4s0o6h1TV2n7TBLbA6C973X0goBM5JBckOTgiqlpJQgnn6vRruZS8WRwIIK9XfU7l2\
+                s6v3pv397vo2/q2X/+1LE7oMLoFsaTeUMwXMOY829DLhWupDkAG9fdBsw3ww08/KIYJHl6AA6WoASsDwIMNTj\
+                eEdCMmV3STSMpVmVkcZXUIYy0HLDIQARgcebPTnklGnlU4wY8IO5mvVChGhoogRBkVd9X0ddlL/Z/1pf7rv9D\
+                Ov+mh5ASEwSwMYTzBAg9YaMoUOyaNUTeQzP8M+sNMKUgYRE0yGpQA28AFuSYBEZmdGwN4OOsdaIelGfCKD0OO\
+                oYbrMQgIGhMKEUpTTLI3f/pt/dZ6LBVvh5/9//Zf/7UsTvg0zAXRYubSXRhI0jCc0xYB6SrG2kaKSM7AowIwI\
+                5tjGRQ0UCOwqHRild95KWHFGnDqzsXsBYFTe1HaMHhaZ5JJG6PsNPoyEhYo04u25UoQZ7nn+h1NvX/Rd/Z///\
+                +nRVKUAGzJpplmhB+kCcecxhRjDgqOw3RfM13AassyZhiXOGVxdpXaAabfsAqAU29v3ecIeAWL2UxZEYIrhPx\
+                mswmOEAgERVwq+lrgOI0IKKX1ztH+/9Ff8WzN7P+39f6moCR7EOKMp5oPCj67E0//tSxOmDC7BpGk3pJYF8EC\
+                MJrCFgQoMOPhpKKAsyqUItZzDJgeqWyOJFXQLGkIUSFb3ReN2VKF/QvPImCAiBOK7GXGap3bVsEdDChI2Lsrl\
+                q1bQm4W722I/l9VKbGoflBkzuV1Xe/r+YGVBF61GkmjDkVRCcCIxlZQbkTn4gpCNGE+xETqsIFdQgIHhasHhZ\
+                r0IR9MrLyY3d5YWFMaEgh/q/zs/EmZuqtBIQvmfFROAw6GRKsyDDkmFAALy+OHEgIwV7onYSSARWhcDlErGBa\
+                bD/+1LE6QMLcG8aTellgTaNJE28oOhlx/IYrem9FXroejbpEbIAAikyooVEkCjJwp+MhIEGyLaeE3zAVBJNMl\
+                CpwZqrY6kQVMZR4+HqVxQpAfg3NWVaR6qu1DdwOpcSHAq4oPQCwzTr/t///7P//pVwm9cMLBJqb0Fh87ayMKL\
+                MB/NA6YocKWYEahqYk63IYCHHOy2mnUrkUg6c1lXbqUrQqmePS2UuU8EizgeQmgcUeUpmBMtjXfbN3Lpu7otT\
+                T4u37nBBcwk4uGuUllOZK1kWUv/7UsTyA0voWxZOaSeBgw0iybwZYM48uHyhlXpnyaABoyspHCEyOfO6DAIIG\
+                M+AZEo2aAS9QhdnVHM2iDK2or5V0ylTulaKnXhvLgqjV6/5kJprRbujJcKPJvGBKN7VkWdP3b7lX7dvJXUdmT\
+                c3Mf7vZZ1IHoVISmQQBJw5whuY0skwqI304gXMBBAQsI2RMzTFdCnomG7rUFg1YC2A8JOwJRUjR7+P4mOTX3j\
+                e9nZWfOZsdTgwKQ5LCUdnyn6u1P+6/Wos5dkyu/yf/6bVgGrb//tSxPADDqBdFE5tJcEyCuONvLEgGo3RRZ1C\
+                MYpAxaCtAvt02UDNheEZTAaAz1eFGweMCZDZPf5u/I1kH99za1h16Aux16mkMarFfa6vt/3Wo0ZT93///0IgE\
+                6BABzBYqOvu0RmgyAgzPRCMSw8z8MB4sGMYOCuyycxyWwMQEAAYjZA76xCQEmAhAIwEylVj5PO7rzxn4YbWH5\
+                FBGU5KDikKuv4gYJdz4syBrbPuefJmejkmU/P5kRH3yLhyXWIpbPbT2kBJXWidJzFzh89wxy7/+1LE7QNMeFs\
+                WLejFwXUM4wm9GSjxxE2y7wASSLoM7BiMLbxDXUDgsDgYjIXwd8yJQMBATdxEwkKApiZYAKTGIEFBrtmQHLBG\
+                MNMPdXcumGZCsaAYm7sNKKuf/gQEEEBU6gUS1Mdk2FgINmWDUdk+J1N6AnkqWkUHsvjIkYU4hQTE0A6bQ5z07\
+                QdTM1Esm/LQAqAeGJUCVJpUDTqlhCMKAEvd2/SLqg/87F8KoJ76pKaLdq/2AZrIAdyKDtDVJ3hPpGiEUQz4yT\
+                eKuSvVXdf2p//7UsTqggtEbxpN5MsBGgqk6awkaKN9RDH0NRezUkqNoEiQyV3z7yfs7SDNzMwYBGL3IPhL6aG\
+                X1QhxivqfszoFsBQZ2JxOibd6asM3/Mk/utWQPhJYWIlY4eHnPPNbNvjHJf/2/9ei+vbdcBszGxABHQEZagJq\
+                TGk0yoaM1LVOQK7EQ8s5ghEc4VB5HEfSVJeliaA1y25yEKQ8V77Hcce9/6UKoDmgQWPVUo2SUUTT7klNXZe7/\
+                pQrqbp/JfFo6stx8uVGkUTIJSmUGRaU554O//tSxPgCUXEHDi4Ydkk0DSPpvI1kZwpvsnqY0xK8tAw8EjMGSo\
+                GkWOW43G1YI1K5JiHoQXxiEose1/EsdlvD0WcBGQSJa9DV3abFPh+2n/jTtlHPd66kN//6Fb+aV7bbmmPBymZ\
+                6CIMi5VMxo0aqDEVijSUJLfBQRchyaSpAwjANAjbdp+x3f1h1cvf6U0UaliR8ACgXcaBlRUs5KospUJ1ovZoF\
+                VbVJEoYTrVx0qfQp+e2mrjdhyqw+EKLnRrnsYqyhEAGMij0kJBvGJmbDSYf/+1LE6YMMiGcYTeklwTKLo82Xp\
+                ZCQYdiS7xA5RYrtfMXMDEQJgD/WDocjAcBMXHBWhidDDT1koJzcr1HG6Ocz5iSMJQdybVe7IZju7N9gUNrpI9\
+                xs4dGybWFYuk8jao4hgFJsAgxsufJY0zCKVhFnARzKidC+/0opEAfKgHAA1YuLymX2RKcYTIlSCCAcyU3t4bT\
+                itIiUD0VexB+b4wmPCzjgWo+zGi7wggYxzUzgpBLQMQIQvi7/v8SKJKuZfLWs8s/+mns3L9zPb/T9djANQv/7\
+                UsTvAwsMWxYt4WrBS4zjjbygsOEIAMonFNcypBysLGIB6YUCwsJjDyUDilSnKQEOkJwMnhliukGETFPWYe44L\
+                FVqW9iJdufn/TXCguOsLtbeRga26Hrd7G1WTK/zq2POIa8yZqoLrIut6ExXSGan10c+RIIqAAAJ2tpNOTZNFB\
+                FRIMY3RhmhyoPNXkDYAYAZWMC7aHcOSWJucdkQhGSalt8HTv5F4l+dE15ymS+21pd7ULl1qkaHU3J3WP/2MND\
+                Uak61ej9SDb3zG5jRNcm+//tSxPcDDLRdGk3hKsHMEiIBzQlosaEgAPJHxAQNtfHWhsOZkHpiSR2gIGGEKwbc\
+                bMoRCsqHn4y1ajZdDZhNEUrwP1x2Yhf3phRBXqcWMGMqgJPCz6k2a0ofWv2+17fZ9ikf1bFN0IsoJKbnu+4M4\
+                2aqbjaRJkFhYI6SlRHGUDhDFHKOWRNPI/TjAZxVmGDWcrScURWNz6ZwcNkQuNYjNtAIBBAApQIEH4wXWx2QYT\
+                +lvr/s0fX//2//M6tiFusYTnOYTKsU5Ko2pg3k874HJhT/+1LE6IMKxFkYTeRlwZCLIoXMrVgxHJB5aOgRgAk\
+                NFRgYwaONoHr2ZslSFCRMV4Kd7mxqVwnt/KN18p7KmULsPvTNs7w/7D59/knDfJDOzn5bkYVZf1eGJrSwvs1b\
+                1oOqxG5/CT7Bj/9rFXRpunYUcs6aj71bS83dxZUoEBAW7fSNJjPKVrQQPMchQQoBTEBYjEHAi23OtvzBhYoSy\
+                C0a9UV0a/8ZovNx3rZMNEXHTzxXrDc4jRqSj/Ts//Wy7/b93q9qHAbNXJAw0QDAIwD8IP/7UsTpAgtsbSFM6M\
+                kBa4tiyayNYAogCyMUdQAA3uPV1hjRgAwLAqAQaGOa2uIQbQsn33li4SOPiCamgttXu4QcVa1zRQKKeDRRu7W\
+                P7vcOsvitm6hCy+XapppigN6hex9m4stDeE70KFrk1WqVV8pQw45IFJ06jo3AT6wAyyxQtOHpMhBBpel3j3HG\
+                gYdp2XCB8BZio8MBo3mJrYel3xCYLhl5hoFkwBkTL0kAkBWk6x3Q3J8Z2ORrLKW1Llm2vo36ZPGuJU8+lxEdH\
+                6mkABzY//tSxOuDCWhHHmy86sHnGKIBrYz5CQ/Ng+GDAX5lQACPgHcFwgt8VBJDBcVCwQSFGWvtmml1pNx2U3\
+                i5kejByWN55PBAXAjkAEuGFISsARXW488BHssoqm2EJHVtbqXbfVOXTIr3K9mz3Wbiq+BlAAwRxtEgmQStpAU\
+                SkhoykIRjRyoNJUUNehdilyqSiiv1hXHxwuF5E85XHPkBJ/gUUo4kikZiTN8etYMsARgumlt7X/mWeh6P/Ien\
+                Z4oV/vfSOWqglAAc2HXSMjNgKZGS9YP/+1LE5wAJKGsvoWDBoYuK4oW9LLBGG7bHJFiMCF0Y+JU2DjbFRGNOI\
+                EfWAaR+naToqOtagNWHu/CyAz5XBjkMVEZskwNGljhhFIq2txZd866LuurqcStUR9FXrtbtXT1IeKD4aNNDiw\
+                qrDCzDnLVZAAb2CkOxnwqVSU7PGBhsBhca51AFWhHWCig18txNT33o7btkSkLb0rpA5Wf2MuW6PYMAAFkgwAm\
+                3RcKtUX7FW1brVJtH1IUgfra5n/vb1X9Grbf/3KXDE2HGYwYOA08Q8f/7UsTugwwYTxhNZSVBdwniyaylIDVW\
+                CtJo4P2aCw9ZBoVGeUchONIOGbnJ2TBFqeMteJ1DYDQqGMLPCRvoPBEfPqLP7ZE7dtqPkjaut/brYGKLdu6+m\
+                wEb/PM5T7tLSkbtv/Wux+aXyt9e767r8P/TJtshvbVqblAIREZUNQMPAsmCLBgE4l3VDB1fveVVWSiAtS6dlL\
+                gwMQnMUxmJC0W3zvIJDFHiUzcWYJjp08DaxcwotJMHvYMRckbz7f6v7vb/5P//s9SdTUMHbPWPJDpt//tSxO0\
+                CCnhbHU1hB0GfCuKJvQy4PBWyQanYMioFnw0OBXEEj0KDFHaRRKxv2XDFiZyRYuAc3twJ9VMNU448he9j1sbC\
+                xC9SmFKKHTpMi2QlXMhoeKWIILacKChJBdx5IA0SN0fs2LkzFW6HxWoASbiJKMJtw4fSjaA4VLwCLD6LL05xr\
+                OD4eYsk8DrpZAgtw2kbCZ3j9gtrsDpWl0c0M4+xFlmAIHlxZrHDO0qQBn1S3X6/dq1bvTIcctFqGkXWV5b1JG\
+                QAGgN1FSBxd68BGCP/+1LE7QNK0EsWTeGJAbOI4gHMpLEG7EGo3wIVEEQQbTI0iiou8vIHuHkzspmAi64IvE5\
+                yIxuz3VEKDSyvtAzYJFZasUi9xs25tjaRtEsMFzT2jQsmKIfeeKggLgDeweRaKBoqm401doGLObQmcQBmgtFX\
+                C7GKUeBtgCr/aFDSPCS4MrGnxG6ZJRfVxRCwTnxEVJpqSkdWWVrZAKUnlrIz5/7yWSMEJhoEQx4Daan1hrrp6\
+                iZC2p3A4pQ/7L/9CTez/d04Ap6XQIZjySPTqiARpP/7UsTpAwosXxhN5GXBg4jiQayksMikHvznDLwHikBxkA\
+                JQORcDLMhgZqS4DEGWOwyzTcBLdu/z5FvtLzv61/y7QsX2VH7syA7p8E+q0jyrOU6OPSfa93Y5iM1DFOdPeUY\
+                QENesUigs0ebaZI5YHLkQcpG4N0gqv1VYTnApj1gUDnUHDRBymGoMkYKZIRNUS0jCEwWcjdqtAKEYRwRvIR/P\
+                +zGWdKQgAKTagCTLkIuOYRVsOXGrx7v/H52ZpjRgp/qatGtZmqnQdzEre9yCXgN5//tSxO2CCriHHOy8boHLD\
+                2JJrA2YYbkaYhuSb3GlYCZSBkVSDgAavFxGtGaAyQKtHcG+cewfEmNDhumboBu/0WnlIAKAyKBGtUkUEh1qEg\
+                y2Qpsv8Y1FmNLFZ3FXF2G+TLZS8bbE52aSzRHoXmFyTpWMvjgas2BHc2UcJQs0y2IEBsV5/Aydwq1JwqxAMNd\
+                xDjNPBbdwBbgPC5VbTI+j6SAAyUQQzIlW8nuA1wEaEQBCW7NPSrYpkemz7yDSKdCqQwtlBS9S2LseJXCvRyyy\
+                79r/+1LE5wMJDEccRGXhwby1ogWgizinpRB8pUvkoiUJAMoxCURyICegrhFir3hhdvlkCymgpqzdUb2u/Xvox\
+                x+e7h8ruglSN1sFASKWBYyNPLtNE0t50+95A//qqtaqwxrNe/vvVc2rbS+7e5Nuur+VWDuOkZ8CFQpvewhMak\
+                NzsbC1YkO4oKRn0ThIzKxPy5TUJQe9gvv93VM7t9gqfVEoNFZI4GUFtjkItanPUjxrV6+kt//R5X7H9lVd9ym\
+                VABjtxyzMCQEA5wzaADEygvOnAv/7UsTpAwrsTxpNZSVBgYjihbytGGdhBga0vESrnFpBBaUdMu9XYcFQ4Uoj\
+                On76bK/ns40t2tc1yVkmxMB4CBAgLiKCZYw6JKjS1lXTNgotroAoGzwtARBqoueKnS0UHipxlW5yhC/qoaZRu\
+                ZbVQBcG3+FS9P841kMhhNSpAcaRhTgCg0OGUBIhio8xZpEeGnFXyFUVFUimLyP5Sc+wHaaIlSkOVPnv+c87Tv\
+                w82odgoJ+fzdw+Pt7ImXk6XxDr+E+Psqg/QM/9vuqTJ24f/7wR//tSxOsDC9A9FC3p5MFgC2MJvSSwLu17nfu\
+                2rY5Y/uQaFaUAeyvNBYBBZ8j5AiAsyJtfJYuDhKQuE4bkCQMurPvPpKwJfinhoEFdlSy+60c84mccFxcRuFQ4\
+                9kmvah9Mv3dyF6v7v4r43s//T3qgFPRF4gCKsXPjDwU4Oa9EQZWgwbIjETggGNVFQARvb5yrrLm5PJSyi2EoA\
+                VooaeotRCJ56++RzII1HOe/yH9wZ91DOjOrYX38yGm+uSf/7pLc3m3N7+VG83r+u8l8+C/cgXn/+1LE7YMJ2F\
+                MaTWUlQbGLYkm8pRiiDv+mXFjNuU0jq7kUhP1xACQQnKYA4yUZHRfzQSfjgOBFQuEpFgrSmQEyLZbqZ5fNho4\
+                EmpsMF1g0We5ijK3MXauhGd2//d/2vvo0t/V0UU1dVYAX5HWEGREqCIL0oiHho7N+F2GJfiUi4Rj5Cr8LFYYV\
+                vLKYfRtAoXD1JD1eOZ0+P1tX63b+ySU28RTmMyG13I3hnttlRFpGAM6hRE0WCezhwUalAbtN50KUbvSJ9ZX+i\
+                jxPmvk8zFCO9//7UsTtgg3clRAt6GXJMwyjGayUsLOXfW93eNZrK2akgsMtLnNTaQIGXKA9SDTAOFug+Uikvl\
+                yp2U3aAtAs/HWhhI95Koti3iIgYMgs8NpHfF1LmT2pmlL597Qhs7PkdFKkX++43o2Wnl9+zVsVMBcMvvHOEAQ\
+                KZb6aVMZrGnsgPAO7WJUcOAcEvk1jIPjNBKCsFFuPynsql9rP7TQ3pEx3c4Ven7K3Gxuhcs/lnef5TXthfN/e\
+                v8fpBGt/IWUerbmbOtHnv7lQdGp//vb2tfyZ//tSxO2DDbBjEC3pBYkfhyNJrDCgG61SJvVOLXPHHrlRXsqw0\
+                YcfJjA2Ezjxst+3ZBKRXTgch4inhexo6uZySHla754/1/fd5zbWEISIg+hbhq7xTdfctOZ2MrsAF/in/36/0C\
+                7cWilfO10b1DAU96TpYZFQ0fzuAI5jpKAxSAXEhEJdwFKHAHWgYKtTPDPwiFHLJFMJh3E6A85qXTQWOESwZTJ\
+                A6YdudiqVjq3XPXjLBM17VHxmx7BCemJstKNQYiudWVS5tLbXqI1rNdARZED/+1LE8INODQEQLYRXSUOJIsms\
+                DLBq12wZpSVAR9RwAAmKXgaDrhDBu9xBRZg6VIp84vL32jTU7trl19KbDWT55ch8I9YTd7KsU0Qwh0OB0kGHK\
+                dZZrWiabdTHtUOb6UI2dKkYyKAk+95p217akOSpAq5qqlOPlJuUT4mwfBgkcDg+4FRAgnIrLRAI4ZIOg8DqSy\
+                PwUFqO519pMYNHIphRmn3VFsamVd0nT/paqbkuKiqzqR7xyCcAMLEDaXGpJmlGsyKF7koTxZglakFTcehKVv/\
+                7UsTtgg2EfxAtZGlJOwjjWaw8kBE2eF0qMT7WAQZUAC0PWZwabxmcprBxATK3QGqEQrhl4VnpeFDLFJpU8DbL\
+                TTfuaNJzyZ1RwcH0AIkG44qPMuvSBrlDkhA22u+9HqzL19WpdFKlubdhHW3q2IpTlbN9cBq3HhMOCWWdM4YUm\
+                CCBnBsiMG/Jiq2lyM3GRS5Ixc9p7IKKioqa5Fdc6EBXBQgiCVBiNUECJeZg6DfPqfVpr2wclujLaUiBS9e/mb\
+                3u9F6a0Tp/mXvr+nVapBKX//tSxO4CDBw7Ei1h6kGFkGKZrAzwkllQALTGQElKgEBtAwCFWhqAEmHKbDXsLfS\
+                1mo0HjNJXwfwBQPQcLrLAgKilg8YDooAQixjlpQGXHi7jZaw4FxKTeTZ/EDUtoQxrLmusuFEtd7VIyGXe4qb0\
+                +5AfEap4GzalpGMh2N9swXjLGBQsOg2mNC/b1rj+BCJ+HTE3CRc2syi8UCR97TbpIDoMh0+qYAKQQW4cYJk3x\
+                U6hq3k7r2WMPfMrVKOuZrXFlUQMtZtb/nV8YvaVcqoiwrj/+1LE6oMMyKMQDWCqwVWHIsi8vDAyhsNCDAAyLw\
+                yOgsSJVOuZGYvG5JcJFRprSmrVF+zqezFLE7ypCqPXXR3POmp0ug8KCRQgM/yzY/QlaJ5Q6CrW/nyHexZXz8z\
+                p/NMomX8KPCufnmf8mi39pzqZFX/+vLyUqX+KmkjBufqqcadVIAILxmlHrDnDXhjRtHq8eR4RsJjajSZjLA6V\
+                oNPyvAanqu7MwFqraQLZNigb9CUe5l+3Z0J+KJRv9FQuYOjIel+0mkdAEk/ZHoeRSLzh9f/7UsTqgwvBjxQtB\
+                FXBdIjiiL0MOFwwoAx2VMhNckSNBGReoPIfhN0M1CMzpsPKECpnPlcvhUDS1ilfK72TYa/PP7K2SiSDaosHez\
+                hf8P1iaUMaawAa645vAKwMY0/7O95Z6uKjV9/f21XbdWf+s+3Of7oe37if33VXq/7fD30AACk420kQ7BgNJTa\
+                OKmyGClAr7APRDskBQK4Mq9aRCpRu2GLV9tGkk41Ah0WChN5laNI1SBqkjGmbVHA1W24x2inC6H+hHq/2/+/r\
+                B9uRpomT//tSxOqCS0A5FCzpiIG8rSIZrIy4amx0SXnucKihAoeJhlHG2Czr9QFoMJ2rBcI6qwEFDsImUFJJY\
+                RGio8qPDYaJDST3bfuXfhAgfDYICbZiiczbxtH3f6v9ygBugrRclhkxmpYecxndqI1zeBl0hQWhtCAiGRNM9R\
+                d0WljgAgJlkdiFl0aXdjVNotgwQgvu6wU9gk9bEHrOaTVKWVj/+bk5IEybUj1csoSJzn7lefFQor+Ur2/M152\
+                zul5PL/Ni7h+t+CIZWpv6Gv6F//+ORRH/+1LE44MJ/DcUJWsgQaSS4kmsDLnPImAxypPGRgy3zpTo0uFInBBe\
+                4tJCKUZou6WA6t+VzEEERlW5/ySTuesoRZXX8/K0iEwzMihGZsYsNG+SA4cc9OSFRVTrhdKnpzShUui96jagV\
+                RscijQ6wPtUQmQ8xJuk88kLpMoqAAAqupSTVqiVZCexzEERhImCUe0zJtWWmaW0ytym9gIQsXZ5Zl65ng+F0F\
+                RRqXIFUz9hfR1LeJvXnullqlduir/YnGilKZh5KPu20iZlQXsxoyYYZP/7UsTlAgmAOx9D5eDBLYZj6Zew0AM\
+                HsGviFQXDZGI31mxg/F2J60PnCPcqQvpeB4SFQycUKiYMBkKrAY6YCKGn6loSmxDxogWhE0aL2miDXrl/vare\
+                S8XqNOFuRXZepSLqeKvMvupAFONNzFgV+zB2hMcaXx8CbcahhsANYtC2AOitYIbATBmjt9wsMvpyWUoMjSxyh\
+                SMb3u/rqs9ev98tIXf09th90T3WQ9/+rM933SKz1/+FfjzFqnct7v/Xe+7Kvl/z7+gi3cOC66XKezfE//tQxP\
+                cCDv1RDq3kZcmRkGJFvAy4t9DpgTm0Eb5omKWBCiZ0qNuDWSAQq2DokEnE0GcN5gWNh8kgOgoeAVQfFzAlLEw\
+                wA11XIYgWa8UsiJyzhg7FkiqosccpjEzPpOvYTk4lYlmMaPcUUWUU3tW9SKIALbKA2a7KEoY0TZLGAdMINKST\
+                zFZiUoYCSN1+6b1WSop93vREXbfP1Lk8dBQdcdDgo5tSyDWuNgVzhQgVx5bUKL4h7o67xdM03p91sl36Vo1u1\
+                K0VZOBv0ZhSsx4gcv/7UsTmAgl8OR0n5QOBaoci2ZeZUGPM0aBQ2BOEoCkG4iVSk6WnlYEDVdXkWeNN3voQkA\
+                nsokEklEosxZTGxooU9CcjPwDgaEAzAmZ3BZYdgBFwMZpbYzHRmzkI3iEkPnITZzjGjTsYjtmbQxxBMXNu5ql\
+                XlpM6IBjunpMgIqCnzAVDEAglRKEBZNTD44a/UZYRJ/mZokAF2VMkQPznDdene71cIARU2fUpijqRBaZFSkad\
+                qq+m9i1kQ4ZHSL06ZthJt5+hEdJQOSMwPrEQpbtF//tSxPCDTLhJEC286QmAByJFnTDYXmHlyoJPc1bdQdApS\
+                gMiICiyIQ7VEeLxu8IinmMMJKjFblPgzk1CuC7OQCjRRs4s8TNmnBlAaCR/8ebbW3Re3SZF2c3Y7vvoCeteNp\
+                ubqaTU/AQvJx6yLB9cNWhBxm7HVpgoGVKCjHgMq0PDgIcGeQhNRsZq3uJVrgpY3gzM02bBvfuOXXp7bjcS6tv\
+                hk/TJHUtoFJbiNZJXU0kZsPxllOr6dT6TvfgO2Xc7X95Vr7lATXW5la09ZLVVB43/+1LE64IKXGsWzDxqwbat\
+                4cGQjrnmgCdVT1+yUInDHgCBEVQ/FgDkjVTwhcOUvqrK9ti2VQ5WtUvDD1irJ06VrQccusXvC783UXqNuoSYI\
+                utSpMLblgtIHiEytOt9/16HMal62r0LJwil8BIAoMgA1bGPKna0YQab7fhEL/sXHx3JRNd5bC5ozWg4EkXNQe\
+                wewXss/5e/8vEy2Ytv6GIa3Up5lCtMMhUlTDVt0BLoAVitS5d7TogIrcdFgk1pxwosvi4TvYSuL6EWDUUKuhF\
+                aVf/7UsTpA0wAYRIspHBBS4Zihay8mBc3KZT2T/DVkVA4pDnOR8XDglCQ80FJXz7B3W2dVs9Va3pgxqyQKCAe\
+                XaNAd76C6YJOako9LlMZpet8taTJkmtYUjnGs1qxWyi2w40CqtsaZWMQ6upWjN/AwNIAMbFDDQgKD4tLK4MQP\
+                BaSkilSnlUS3y9y1tg6vCrqcFTv14qeSJJe+u8P4y8SX6cPL4buP5FJa0swBBVt//KdJJb4/k8PJKx6XDPT6S\
+                +OHxk9kBn+KSkwYRhRezPVbGI9//tSxO2DzNg9EAxl5QlLh2JBjLDYogmlrrwhUeSjbkfxp9AhYvZsIV4LOi8\
+                FNoh3TrnmCoLFUscbcMBlsiKnniKSVDYYkwWC4KBMLn2uVYyoWgZT2QWjTB+PV80K3uHfZycqNVuFXfrRULXU\
+                1QAmgp7V1fhYDNXBBCBX1rXHZKFsHUMwEmqlRqG5D9RlmDatf49uGU81yMtkhqZvc3M1CXOhjJq5r0JUbeDQS\
+                igaFmnA5YoQNYvLJzJ54vY8wMQSFBUql8Uda6eESmtIsXPLezr/+1LE7oIMOKMSzLBugV4LouWRicAQ1KgBF1\
+                CzdupwRl/GuwC3VrQ0vmo62jqMnhLbVAGDnWfPb1GUmweaUD6gCAwAIZIPahUodqKXvvOpFg6PQ9yjZ9K9Mq/\
+                jNFH/s7XNtKiz2jSSxvGLWgjNZCBE/DZ8C5QVWOEly0GA8q23CifNLi2qhEgGQrs4KjWNfl3GXzD/lS/53ueX\
+                adLPhLffExr3/e7qqMREN1yW1vv7vdt7Un/tyn8Jedlj/jawAhBf4jaNelWfD7zG0ddOIynGrv/7UsTvg01km\
+                w4NsG6JTAbihLwMMBiiv8OfrJTmOs6KDHSkoywKH5xglpyoKCWO1nu4IRt8y8+F8sLc+lO7kYWlDMybA/2/tp\
+                bs7y34cQkv/rqbe9P9H1/dBNTnnnrQr7/b5K72kvVk4V+A39G1ojtu+8lTi5HwodOBaAIYFCAOA64rBOGNr6r\
+                kgBZdxmZERiRm7LnTflzHby2UxDXXKfyH8x+DatdwX/MuuO+2ciHviPmy872Pu7zMsepuYYb915WfP7cfsPmJ\
+                091t2pN3ez/j//tSxO4DDJyFEqy8awFTByLIvKwwb8agjIgCnt0wMFqAGUKsEiAUDcIcSZZEGMQczxGr1U0AU\
+                FsY6i+kZfvSXWKyIQNFcMMfmhgmjYyWxxJZENC7BCoT744aUe0VpyjzqWV38VcG7qccaNU7GpFETcKl+pUAAV\
+                llUAOO6WutBapDohOJg4BC5iTHo33hWPSh5LcEQ2z5fQ7c7yiqNUyYHBsMhJp9QjZuiyxBDiyzw+sTxq4qgq4\
+                BkmKESGSaOb12Mtte1BjyewZ6fzZpWjUoByX/+1LE7wJMPDcQBuUhiYgPohWWDckRCDUT0WEtSbcvMVIDx1Hg\
+                HLOO0PcsJnaiYlJSDHJDpROEkbI6aEx76RKWR/aWcYGdKfuT+GK0+qYYg2flzpkaLqCDA0bWd//B7pfJ/c1k2\
+                3Uu5LCqrS2/z6cNvFGUVk+qV9UARUqAFm1lOZOD4hYeTqFxWJMpxSOo25qDZNsuA9DBhwErXLqWGyYKgJ4PhN\
+                aTY4Pqc8OrSbY9DB1bhhva4+b3ULY3Qj3T6/pZ1NRFLjeMK7DyMqe1Qt4omf/7UsTrAwwkNxAM4SiJbI9iSZS\
+                NyPBjJE9y6jks4Jio03WMkgKatmziAUhGzoSn6Os2iw88zsKca1DDi4uLYNOPpCcVQADDEpSg3EJAeTSfDDyj\
+                e9DhwpYJS+xnY9L0IR9ikBpTZvHXrVade52hMtKMkFDyS/xiWD1067UjUpGiYzlvr+y7WuDE2QTWAw5SbMDs8\
+                wsycgp85owAGxsLpjPZNsmxGWzBi0QVbaEUvTBVPyIjhyrlRH0n3fUb9d/kGgb3jbHkGtYdXap+o9Yz/rU4//\
+                tSxOqCCvhBFyXlgUGfFKHBp41Z+gVYn+ogYqBdhmO+AVmU2tLCUzYU6ZhLwFhARC1lAmZUdKoLCEuhQwcJiUz\
+                YhsdY8yVgYPhOckpE+6g3GOKBJD0PdSGFil9agscF8UHih27Y4CLCWSEzdxqxSlw42h5bwnIY7YyWQUeEE0BY\
+                YBIk8O0izxe3U7mRNJKiRrIIGOO5zCj9fX7O1Dt4cKpGgfWDsB1FXksH6J4N+TdyId7vXf9XH3vYWqn//9WZ3\
+                Df0fiOebaF7ZzXsVAf4Uj//+1LE6IJKNDUWxeUhgWyQIkmUDcjJhKp7VCnw0kF+UsFIIhxBooYGwsjFHdsDy1\
+                e4swAPXYpW18vOHPzjtBWVZBYloFQIekDpl9uh7VEroqP3Nh8KmCiGk+keTD907EpxNMVVUTSixdiVGN0gvdC\
+                tBASqoKezxYm+50Hlx1QGQBDBbTEWgz3ZPRN5by9CFreOqfJ6dUEUIwQVaESTCzXohgSKCCiQo0OE2qc9QDH0\
+                xC4608RIsXFnzRwWYATBBFSa10VX+pnkG7Z1j3alGM6Bvf/7UsTwA8zRIw4MhHPJb4biAYytEFkgckhyNEAoO\
+                NgW6z4w5jf0pQ6m5g8GQ9KBhJGaZ1JSUiAQ3l3zedp+XGcyYs6Uk5TmZh9dzT7HE4kbsBenK8yPk5m/LKJJON\
+                5RLoTb7O/2/pvfZNIHkfN1UVi4HYLkEq2ko9jFU9ySoRyUXEthMFB+cdHBtTn1DJUm2i3OR9hkN0LjCk/P5xo\
+                5MJOehsM7p31fLou+ie7X8598tnNSGp/2HXs+ywiE67GguoA2/ThJajVunHfbfmGedBoO//tSxOyDTEQ7EAw8\
+                aQlmDeJJgw4AV5Z/Ls/1TjsRLeNjPkIhFL0ETTqjoaQfsTcxDuyCzBK0Vkau4zusSzIly5e4JpIISecHYs65i\
+                SrlVuD5IThJb5wVWCB7lEANcSRI2jCMiHStJAiY1Be5AjIXG1z7rh66SSoQAJr/5UGcDnbQPo+TRHlQKUS9yA\
+                vxrLdKfCTB7AyeRatSER94SqhoPqUcgJLEgwOFGCcUaq11NDLWOpu2J0v/+i22hz9v6UoAgdC4MKEucz4stTO\
+                ADwGrIBT/+1LE7IELkFkSzLxpAaUYocGsDKmbpSIwHWCFPxNbfvSVCiErBi8/4Un+mDRUp0rLcsQxNxetnFPy\
+                zLpHaT5nu8z0ppGZ8llcGQ7k3fE/oC8rco56EqB7p/vG/+/gqlfXyvtVf4hT6TGPd/tVXBrqKMGMzCxkBAnVq\
+                6ZRH+dRmVcPkrJUmhkBhzsIKmrZhV9t0nlI99+9c5NzsyJvHeyLnNLsw+dGD+RLPf9Eh3a3sprVSEl/AXdS7x\
+                NhdXIe9nphhqt35CstNX9EWiu/gRntqv/7UsTng8uYMRANYSUJbYwiAZYNyGYWd4MCXk5MFEJBM1G/9G3NHH/\
+                QUMRs6OSPOyGWRnC9eMZdtR2zPPL9S371r8Oe1MvIodc/WexHAZfgxvzfEKf1uqZf7/Qo3KhoLV5n+jq400z5\
+                4cY7zfrtrsT98kUgFOLVC2smCeS3CDDnwIrp/k4Pug1H2qpZ4KGlvj6GsSRUOWbOdHlo4spKnRNWREeYhtZOs\
+                nu7Vqyss1VvWzyvXuxGdHkczHV52qxaTdk3f8j+yrZXoahifsjX6dG1//tSxOkACQgtHSO9gUGknOIVl41Rnq\
+                vwUAfg1b8oso0P2WCbKxCISBTzpoOxkHAC9lLCAp+eqF8K2SfdPBBE8kAKExVAqKVIPLC1iWEaxZp2x2gvkHC\
+                jHpWLKYoSvUqopHudrV6u0VVZpbUqSw+babAZqOBQAD4tG8FYkzYEUqhoUUqSWsUyJxPs7BgfFdODljGfTDu9\
+                SVPlcEyFiyDFT7gijcyOniC7mbd4FKQkp0j2J3ZzdSlhREpkaQXeUzVkfaaUJmcwmxHNAW+tqYY/krD/+1LE7\
+                gPMDDEQDD0sCYScIgDcDDHiH6xJCO8WM2ED9QdBqH9pqAZG0cu6CuRpLl1ZA7k4vJ9bn9twWJ5AOiKZKdIgnK\
+                JwnEfVUMymTz7HtQ5evVAYqsTK0wZ8a/vpU3773rvK7XbkvkmlX9SDmTpWnfxmGiFQRpig4ey5SQywlZX8Csy\
+                YRIKkoxduT737yRW0omhvtgVDM9jKPTUqpfF6IPPznZbMr2+6WZKo01NUXRaJVUS1pcGPVm31i8tShiTyX2G/\
+                pGG1hvAhbXTjZDXHc//7UsTrAgwtrRAssErBSwuioYYNkPH5VjiytGeLwI6Go7i7EkuEMAfr0T1NpFxSmITWR\
+                tVam5LX612q0sstNIxmaFKsaKRozHe/fjlcKZ1ZIsMai+0p2358y6b+E7wfDBiYXFvz7fj8Sj+v98+m8hHj/3\
+                Ke2/1ofwdcZwcxAQMygNm5WcWJBK0j7RDG0RY63xIFtgYVlFDo5Evlxu5wjTmxKZGwG7VNJ+7oXgxpgalAKip\
+                1Jpp5A0CQL20wkno5W7aeSxOyxNmRri1qrPWNoa5a//tSxO6CDf0JDAwkbkk6mCKVgIowZVat26vaImoDSS8w\
+                YezkgTwG3goWoHHdfVQTNPMphv24y7erfghjLdMWCtYRDORlSXlM66tPO3hER9MdVU8ctb2vJM4IOVJTpvivs\
+                pTrrUm+3f+nd/7c2/7fD53X8QIOwx37KhDdEh1OAxYGVD7cyJaEMQ8GoziveAyHbVtntSScjkcgN94bEQaZat\
+                +b/8tL/p/vUJGPK+FtrH4Kmkx8j5nS7E/xm9r4W1Ll+mff61VOvuyfRyz/57f95+//+1LE7QPM1SEODIxTCY0\
+                XYcGHjSFcUSsCEdmQNNVjbPIT04Z2IFC6rA6V/pfbfZwJ0hIXC/yVUpDRs+VaOgx6W5nKZYIqZrLGJGMWlVN8\
+                TAOhwYrk6hVhMRsn2jBlpkLpIjWCy/UUYKmkLGIopLZha3jHtjKk0FCak2pg7KtiqK3RoMSJWJXFcOaxAYXcs\
+                qYkTJtk1M9VJYuAoh6XSafTPwRBgfUtLjLnqDkiaIBc+OJpMPZJoYQLoIFDN6Xsm0qvJ0taKhFfUp1ZLk59rx\
+                VIVP/7UsTmAgpMixTMPGbBfZCimYYNWa3C6CVUBcOqZkL7hUpM1MDUZQkxSSLJ9oouB9eFKn3Xf/Y1/JszAQP\
+                QwpieMHqMR2nq+SID3cj2QyXkOHDz4bus0F9yjNqdKtOnGx2hQBC8lPJOD1Pc5OEseg7YkTqRyjyz5OBLVRgy\
+                MBjv5s6U7HJOavxY8uVXKAPNIK4BtaWORELkMmIobMrpJa0IYYya4lIjA/GKg/vL7+jXzmaPO/kNkj750MYvw\
+                XiVl1I0MrN+l1PRTPyEb8eQwsvr//tSxOsCC+BfEqwwSomDmCJY/A0Q34O67lvv/+j/nn/9D8BtjZjTmKLMZY\
+                q+lFWr9cMXymH1LUklYSsNtnUh8uRDAoMigrUJXJY3DIkFgEFSZEKvNPPqPMDBRb1rvtKKtaQt+4WX9z9132M\
+                u+xUZA40yotQ/CYlIjoFwkKR6bojF4bQgKLkJoI+cREOXWIly21jSiygRHm75mQlS9ftMiRFSvHIqQiAq81A6\
+                0n4yPfCLGZdzNYZ+HwFyf7tf20395/Xt82Pczur2EpR3P/lvto3/+1LE6QILjHkODDBqwZWd4hmHjLDn+t0lU\
+                QFHWlNlDujyi6NKzZClFWr3Ig0PSC8JApFr1RssxEEwcCK0g+FBoAWLFDhJoxNkOj5cwpSDLXvkq23tQF0A+L\
+                lzZSIht6AM3GuWKKZdp2iiFTem/X2KdhcO6Ftq4ig6KCN74ysVC6rPbTaGhV3rA8PEqeWZkxLottfyLEup9I7\
+                feH+fDzI60IFnFipEIUxoaUe8Qg6IUCocAjQpOsMnY9E+lOqPctVfYp5CrMVqDrl3hBjlqUQ5Xf/7UsTmAwwM\
+                exAsMGqJNgXihMwwWLSgJblWWCCaQ0qyElVR3RMPbscjD7+nCybidYypZGNM1jFnXYrChErG6m752dfWv0szg\
+                tq9Vu/oIhxcgSdmNJm35vu7Trjp50/k69dCJPPak+x/1f5v9Nodq/HHX3UgFEM8H7yJFFGGoKtQhA2qALs2Hs\
+                nVp7dtTB6KGSavc4dKkaiHfKYonIApQtbVNMw6Etbr+zmlM57CcoRAz6t8oC3TNMho2+v/TvUteqpjPaieiHh\
+                bVe6Pdnb/q+U3//tSxO0CDKCfEswkasldimKI3BQw7DFurQvBqGPyjEZHKGIMG4SjbcqQkIWURXUChmRJBUPu\
+                n/O5yKRFHsHrxer2NgvnzM3JphTThZCxQuMWCrihxq2tAD52sqBp8JTMroAKVS6V2PWxiksYkZ1I9NJQnld/4\
+                ABimkUIs+4xRQscRmSwMr7myKzGITU9WrG+aHodUgjJW82h+xmca5zQvynklRulZTh9BbAtQafJT157vqpTOq\
+                xxXiffOTza0jx//XerBznNe15v5qug8uN/60H/+1LE7IMLuLcQLCBuQYKXYcGHjLFLYVafqwAm4OdR7LejXrp\
+                CBjxobJRgFPcFgq2mlEP3pNAjI/sZNrkr3yBmXcrYb4pSGNjGdQLDrOjVAFr1nKgfFDT1FI8blnsjOEnjVlsy\
+                aa1Kx7Bp1guSpfvSx6/aWkAXBnTQC+xrQ19B00mEzoTkXWKyklZOByQOSf5JmaOG3Do0L+aRuk3ntEsxDDDiA\
+                ug4Gyxo2wesVMTRC9IQceWtsGFBcVCbLGMYq5d61baScX4b/YdFd1/ZpVUrcf/7UsTrAgw8ww4sPGVJYBTiVY\
+                SNUFVy+TQco5AyYITizSRAPAeH+rrKBiuRQDjlVGf/5DRECm9WyGLIMIGjQ0WWFwy06HXKOmQaJAC54GSgmTP\
+                FWCRJIRysCn59DGDdLCtipG1ZpVu1MOIXcTTdIBLHKqxGMDgUTRkGORUy11eW5yZCYpe1ID9YzJAiOEpKz6iA\
+                afCQbBAG7ECLsqkXtFdaTKWRmQpd6Uc541/R/KTNax33LH1b8jZe3+ocVp3NjNv6bvFfW1AjmmMaWWfWaJuo/\
+                /tSxOwDTCzPDgwkakl1lGHFhI1YVI1CUgrkhM1t122pqCdCqlfs0GEt0Ahk2Rhw1dVpLNuOgtrMI55/LsbwtY\
+                ZnEO1WMmg4qcym3z+FUI5W6dLsSDHWiJEGgqERDUxRtgUi51wsXGTBUyLCqGW7ZxmlMs56ospMQU1FMy4xMDC\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqAIC4dAePiqIsSGYC\
+                bDuIoW1QHU5BSOzQMKVVDAX/+1LE6oIK/IkQLDxmwXgPopj2DRgFQkPHhrWGhEDVR7h0FZbnp4BPAp4q4kHCO\
+                dkulNToFAUs9GFQ1ZwaqDol4aEStbmyLac62kxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqv/7UsTtg00pSQwsPGrBbJmhxYSNWKqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//tSxMqDyjA5AqY\
+                8ZoAAADSAAAAEqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqo=");
+
+            var audio_gameOver = new Audio("data:audio/mpeg;base64,SUQzAwAAAAAfdlRJVDIAAAABAAAAVFBFMQ\
+                AAAAkAAABOb2lyZW5leFRBTEIAAAABAAAAVFlFUgAAAAEAAABUQ09OAAAAAQAAAFRSQ0sAAAABAAAAQ09NTQAAAB8\
+                AAABlbmcAb25saW5lLWF1ZGlvLWNvbnZlcnRlci5jb20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/\
+                7UMAAAAAAAAAAAAAAAAAAAAAAAEluZm8AAAAPAAAATQAAP6sABgkNEBATFhoaHSAkJycqLTExNDc7Oz5BREhIS05S\
+                UlVYW1tfYmVpaWxvcnJ2eXx8f4OGiYmNkJOTlpqdnaCkp6qqrbG0tLe7vr7BxMjLy87S1dXY29/f4uXp7Ozv8vb2+\
+                fz/AAAAAExhdmM1OC45MQAAAAAAAAAAAAAAACQGOwAAAAAAAD+rdGqt+QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\
+                AAAAAAAAD/+1DEAAAJWCkGJmBEwSWHIyTMCJgKCQJBgeEgOQCkHPnrr/5QG1+jbhwICAIHMuD4IOUMBMHz/EAw4Az\
+                4nB97uCYPg/hjYmJ8uOOfWGBA7g/LuyjpNZ+p3/z/DGCDj6wRGBqqZ46usmIcoSR4z/RmU1aVhmlrUCunFyov0pfU\
+                jPJesR177zxQYiuJqhW/T1kxdZRItUcGCtun01NyKi7SFMEXDkDcWeE2KhABdGZSb/81jKgpIPFHYKX4NmT77wTey\
+                Ggpf+llyQXfNIVquX/b//tSxBMACtChEyysZwFZiOGAbRxhwuEZfZ09wZjMccHnz+VCcs/YSUxiXEXm8U01xyXnFH\
+                UnnvdDYRoStRJS3KaLNYUWkfDlTb0CO0HDI3bjGqcRAZGY7OwBW9EDOhiSMv2/jzVd3XU+32xJ6Elo4n926SGe6bP\
+                JOxU++H/Rxzu/QMc0IkgOfftu7/huldUvfFq4zsrx/j+2f7/5AEAEn1vCvEASoOUAfxy6WuBsS1N/GS6qvVFDe8w0\
+                9Ga6OrVHX3BJijbyJFrVnhilY4010QD/+1LEGoDLeGMMrTynAWaN4ZVFDZn7gmGA+JahpoAG6VsCEDguhSGC1Ugt6\
+                YsCgkYYMLaAWiIW1oorTjEAEve5wEwwPyF1IVh4SFDfa6xHBPoolts2HFadd/n8W6Ai73DgUWrXctVr/GOc+fklBv\
+                G/jbaT9pxTACC3i7jzTd+rW0uyLlzoeRH77021dsCDsOa6I+/4c2pgQAFdkHQcIAwK+EWFMThEQKPp1EaKmmvkSp9\
+                pQGPeVQZJ5aFJZmdnJkZVDFuafF0uOnVoPvnYpSEcE//7UsQdgMsgjQyqGHIBfB/hgbiNcTeKgMa8XrPCrAIyGGwE\
+                kwFmm1jXi4iXQ5VPIVbty6Pv/q2MDhOETmDVKOEOC76nxripOtqJiQjtzrofPXuFbPpQja7Ea+z56p7uRLCnXkzpp\
+                VpzYHl+VJtuT2c70jHKZgzha7bXOr/sZ7BJt7n7LNH7orb9XK334k9f5me6cijzyqPo6hUTB8lrlR0qOon4NF37z3\
+                LwXKDnPoDTx+8sl93NK3+eWnPUtdP+r7F/1Ra618+Cb2phQVptp9L2//tSxB+AC+BZDjWlgApHH6h3M0ACapGWOp3\
+                /MfdreX8k1vudjX+zzEXe1uXweZ7+v7b/9N2UZGwyiVzGNCoRgMBgLb1M+JV1AC1Bp6roW8xY4HD/ZWxPmQMxQeXL\
+                IHTwNoBawGLADkCzebB5yPAksAaKAYFCviPxHIX6AkEC08LgBSgcW3gKACWoQDnAn0cYlAePyKEQJs+SaBfD4AsoN\
+                CcO/7nCcL5vGTFgJsWWOwgZB///y0TZPlknzdZv//AZoLAn//8cQswAgACARJttpXT/+1LEBQALtONPvPiAAV8cKT\
+                xstLAk8+P4W4lwhbM+u9HwroxVjpIsZF4Y4CaDMJmpm99FiLEWRRa9zpMiApE2pJF42Uj/6kifEeE4eWrf9CkpKou\
+                nycQ+v1pMurOwIj/w9pd66n7f/KLNQCgBAEAQMs15Sih2DjBYJ+3SlscVVnM4ZJgJFdoGyl9Q2hyI8WJ2tMRNhyId\
+                65iJ8AbwOw89F+rv3vMikPBB//6027mqb99fQ82/v5h+n9BrUGdPBj3VRqUHAXAKAgb4O6/B91hIbf/7UsQIAAv9H\
+                UfstFNBdxvoNBzEuEoV8UD0ULm0IvxqF3woJAcSVRggxaAjR1B71M6lLJoLAjqreo7WXQeQVwovU37MtLXycUiGm/\
+                +239wynfX7QYE/6WbU5upwTvfU4Y9+An4qpeOAAWAAFWDzR2mAlVkNbTeZ1AIshRftBClBzdaSlQQ9Y21gaWxyIX2\
+                Ush5JDTrZ+XTRIdIN5QB4KUPJX+9X61olEdo4y+/9BH/6isT6b/zvzFbi4Fdg+Rv8Puvgkp/QioFEGECRn8fR7ak/\
+                //tSxAcADADdVawsVvF2lGl1pJcA0fZNGUY2D0jhqZ1rtt4wsl15XD/5rxL4K8YJIMcKSrE49DKRyJ9A8fYyp9pBA\
+                uT+oTt+ejacqq+/7RMh1v/nHCsxnrV+qqQWn47+vaEfR/ZlrLtySQBYGm9h3uE5i8byMFeh6AMYQRATaf8qjVAm47\
+                DU/DHKfJ/FbQUwanTfWfKrK6etK3ZFASll6UXt8+fymYH3URfRjAKAY//MriwJKmNAf8SjKvwsGfo9TnnegK2b2lV\
+                g/d3n7xwk7gz/+1LEBgALgUNfjLRP+XqerLz5Cb7bpMCdBeeQweAOkWUo34kacTZLURAM82bE7RLy10RjAsgGgUCg\
+                1f0hHlZpQ+kp2HcShp1eswICbXY7bmMBBwNf1uGYMy//HQ//6/6u8n/g2QiWUwUyFyRNxj96rCjPBIicyJsdBFwQo\
+                2gC5ifCD0Eh31rHyOUQU+8hp73TKpZCzCBUTMUrrmQjgZIWaO8zr9aGYOEJ/BMhBwAi/3VnIR9MWIDTf+GOHfFhj/\
+                WN+EB6CIdhAjILu7z/chxrkP/7UsQGgEvhK2HMPO1xZCXsMPKLFhPSl1LmfNins18hiBKP6UvRUT66sPGElteqt3/\
+                /nNDeH+hGzvwiZQhBEAsn9WZTTR0aEztImectRYN3ehh31cxuKHKJ1/Usye9fnfp8r7S6iOnbWsGIu1IysB3luFAF\
+                +LcTQhAS4S96CPhEP8T7PwmTn8rok9USTSmrR//vWdYXI3Vw/4TzINCRBT/yCIxaMEjz80ELIetfzKQINS3/Crv/6\
+                eR/8esEHykKaFi6cgBBGVNNxj8morbMIYM4//tSxAiADITxZ+9kqfFrE2l93LTwxszhjYWQcMpUXUwMgAkhMmr/m8\
+                LFe7NiQFSOpTd/68Pb+VS+ESyVX6F42HPrI6f/jrKQM3sR41zzHFP/o4sfT/qY+07/cpWRP70BpVuTvnfyXfabotg\
+                AACAAFv0crQDGmUiMDDA+IDC8FjybM/K69HK7OYYZMycA0Ap2PS2zbuITGHrPd1wpOYsslJiGyAaB4Iode2b9ZIkg\
+                aN/r+tEyd/AILvb17X+2UYzv+f/Xvw88CsVibjFqx1QqySD/+1LEBwAL3Odjp7C4cXcm67Dzix5QmgYrGkBOyDCnE\
+                sVhuD+bhbkp5N8xzEJCdWf+umGa1WIbqPxr88tR4sDWdZe8S8gCGoWbb/mf9YkPDhD/98TqUBgc/9nQ1BB93EAJK/\
+                9P6zFzGWoVaqvGZjVxuwkSCGU4CkbTmLUXkdwVZaiJBy1eglGSBigrFCkQfkWn+J768hPgGImjfvndRW3pjoLSb/T\
+                q7ufYoeL7/9flAQwgjdG4Rv+1Uit/9vobVGBOs7iCuYTtDqMYSbDNEmWbJ//7UsQGgApE5WGnrFTxQhXsdYSJtk/g\
+                X6bhp81FzYkQ7k8cObE6PB7SQJWfdUKMSv7tbZRJAhH+9Fs3IeV4v3OnkeR0RP//5QEI38j/6OMftxaOoHbf5XbR9\
+                90CdoVJiTUY3UicV67EGsmcuAQDEHbL3NdmQJOiLg62CIrC5sQAWoB4EiNGj3P/S5J0U/yACGaRC6jH8zUCk+2v3J\
+                wwfoVl8U5DijKD/7N8pXWAMQEgS25B0Z4T1gJLwVBRsAYjX5uGO2mBdfTDKAWsp2GgF4nN//tSxBMACkC/VaZlqNF\
+                Imax1h6le2LyUClBJijtooosU3cXCyjzrfU9bdcc9nWh5kj0XQ6c75zqV8/+rU72mkZe/JC1iEmNOMc/OSTcUkr8I\
+                +zLAyspFO3raSsPPhNSdaE/9O7SYsBKFJ/mGDdhgOfU4evMfmFB8adiA7Mca/tzfq/RjiYMrewWRog8o12z+n6/Nq\
+                haAGgGAFJHB/8rbgCS3VCqUAJF/R1t8M2A0v4abZ/U5M+MXMUcHgAwuZ/Qg0TDH0nP+h9DakhbE25E+5z//+1LEHo\
+                AKSN9VrB1zEU4crT2Gif65fLWOY7dor188KV91+qRobu/9/2LaIUgVQBEVZJGOfZjtZmbP2csopppJsWdco6ybTfc\
+                xNCfZlPuSIe0/8yakRv0RPCgs4kg1SyRMmxLk+7Gxo0y5KFdLoPwqhFtTmLG25G7sutV9XmJYggAAICADj345qxWp\
+                IKir2IC4MR3NfoVkKbcJHtbtuegnQFBgYInk1LuUvp5x/84wbFnBBvzRFJv/jrKNTD66qx/7fR/V7pXyl3hn+/X8V\
+                sqGX//7UsQpgApE4VHsvOtBPZIscZeV3qoDNOS/8/uqay4UrXzIIflKPL5MgbwfGbIIQpXj1sTwNtZrKOBgg215Tp\
+                fbXKBzuyRX+HGZP9Ro4PKU4hEDktra4UNrnRwM6oWZ//5Xqpof4s9pMJuW0f7+QNWgGTKB1mQq6Y9ZFRkjT70N5lv\
+                aqeFmtHU0Luq7IlA5Hw3dfjo0MsEbN+cEIlv/6iTt/0McjE7lTo7kY/HHXcn/Z9Pt6Zc3kwAAIAYMl34++SAhob23\
+                Bj0iqqHG34JIY6qK//tSxDaACiDXXaycVNFMkqm8nJzwfinwYJC2N6raT7nzpyo29hMD8JCgMLoY3oeEINHRv/rHX\
+                IveqyDZANI5URg89COU/o/bh5XuDFVD0BAAUCKXUF4tvXfW0ozJ5phLLAOYby3mz2pmxpEfL//NgLUwGycnnFtXuQ\
+                gOgLhTkRx3zjjxVBtBaEIyN5vkR7/X1NHp6N/8i2u1P/V/d/is3zIBAQKSUQpiNBR9Rvv4CFEXH3QnhvkIOhBnQZF\
+                TcW31kiCbJdWv+imLIeDV/9jElDf/+1LEQgAKNNNLoOlFwUOeK7T2ii5+ga2ihSH/nO1lKhP6CdiuRG/QDDpqekxA\
+                TDVnu/mln8aABbNXxjCmZm1I6QllXIkCznTEX8MmIwGQyzqdCv62zhcgBRO9BLJjGc4eFSwkix/Qrk0IL6Fr0U5hT\
+                fL/SSexBbdsMcjKdVGfr5L+z+GnfICAGQRH9Bbx1dpoRTutSyQdTvduQaoC0C+osbOqwbJ2HV7PVM6zhUdNdahNgG\
+                mS95tRMS62r0hPiUb6nm6ibqIgIif/0yiAfdH/yv/7UsROgAoQ712HqFSxTZzo9ZaWYMgAPb9n/yBpmSJTA3bkTkg\
+                iF2GDBIRMLC4w+CTJh7OGpYGAADBNeVlEJ9g7jTpFzugdfQAvAaDkccR//R/ux+iXvbL0grt5g+N3UoAMBV7K7/r8\
+                5W//fqYMmbwBUf6tX/bB47+Ds3wFADRQd3w1bxqw4xJ/kE5UxGuaCou5F4tKbM7GiJgghAzSBHN1/IdA0KBabEu6j\
+                INhKXwchshWH9N99Q7S/hbVuvUg3qotXa758o620Gt8q9ehJP3y//tSxFqAC8zNZ+4867F/H+l1pp6Q97fLzvKlqL\
+                MM1Xl1AnQUOyyWSC7AQsLw3xbC/g2GIRE0Nmq5n7G2u1XhO9Zj/yEhc/11r+OOZKagBxJqrXoFSAbv+NEUNwsRx19\
+                PUhqtQ292n80w9t84em5n3KDtdP+n3N1a1iEAmMDKJl1uDVk8GgEDJ4xnYd4OcFWowWFbFH3FMY7UML9WtQ3mU8Rm\
+                9AUk/6K0U18hCSd+1uh/3+qmVpCwXRG0WyFjGv0VKfyC33/7V4gFLnorMJ4wOwb/+1LEWQALKOVt56z4MVKc7Lz2K\
+                XYgSo0hr2mNPpHjghjLguUwkSGzpRYDJpEBwWFdsTkZLYQyJ6sLeoczRD5BUJTduEVqZyl/UOJ0EPUDnv9hU6wMCZ\
+                iHD5drAmNFTb5cEyJHT/6BuWFgGEhJth/3bNVuzgwK5SqwyVNpuIojz0TYqSh/MSLPAAFAWDFWzmC0Vh7hpTeNUbb\
+                RyRYiILfvmFgI1A/9gCAhXVtKiSsKfWzt+IFKLd/EWGm5R/6Oa617slWauA0mKMuOMb7zLNsEGf/7UsRgAAqwpVut\
+                vK0xb5zo9agWIDM1C7AjGIi70W9UOf5Na1HDPq/xncbMQnx9Q1FedUjXixoTaMFbj/5/+hVzzvzR0JSa6dDhYcY1T\
+                H1NIk71XbOfjj7/xs9N9MhnSWy87bVaJ1AKAAQHJYP/uM00ZTWJZvwlWZpFnAFUp6yh3oj9MHF8iuAEaARnJ0EFpr\
+                0yoCmFkeqEEI/k8TUkj3+cOg4I36uAwEJbojkMJopfupUivbm0Np/jq/r872ehFsgCISk7J/2s79A9tNBq9IIV//t\
+                SxGUAC7z3Xaw86/Fnnyg1tpZYnE9bNAZJ1yYqBoVqPcYzP3ksPxP8lGWFGawfEmfqo4VLf2HRgIwemIvzShiH/ika\
+                g8B+KRx18xEHDE/mtQnp/kavlPf9qr/qA0mkm4oxnhuQzjRJEuzTb146mDyFgukDyjCYWXXO08Gme9wBYPAjxSExG\
+                eJWOD5tAfH/41CcFwaT/jpAgZ2Rn0xwzqurehno/+PgZZrZIlvk/ZsVAkAAAAALUiGH/+M1D7eXGEkwVTVQTCMAmN\
+                l+dyNA0OX/+1LEZwALAPlRjLztcVUeK/WHndbLgtEcSDlX5THotVrxUKgQBJQFguqiyQ5CnUTgMIC8HgvX7VGRKgp\
+                ZLpppNzdUB8ASE8cOO/nkhwzb11QXmH2N97VCY6lv+T/nCnyst+o3dAAIAkpqsauSujlllkEKtuAPBObuhcKMwCjg\
+                M0xUFZcWfFRmXdr5du6thYALaDwsA3Bdf1juP0icOD5DYEG/diBl5x0jMJrdvUwfUagDB8z/kVLGV3/xjvon+wu+j\
+                rMnflzKJ3pSAAMAortsMP/7UsRuAA3BDzmuNPTBjp4ntbkWmN0UNds+nvVYcpvNVVGjJ9DTADIiE6n2bm1Od1u/Gt\
+                +zJMWbAoqX1j6b0RYx6DGK039WYjQSlIvJK8lkA7qhhhv8d6nf6HYTbin9DBz+R/E523qOVibAACAhkyVjfa9SOvE\
+                tGLUSnYsErceUVC4yOpDYODsGwMmIGDX5dVjUuxxZkYvQGXEmOsyPJQp5IgQUDxHoknV1azgmQSAlP9sxHKcbbq84\
+                xTpuyX8wIKCGv1c4jCLvD874kiJ/mJH9//tSxGMAC7zxR+00tMGiHid1zLXQNUeINRA0BJxRxjeT+tKR9QzMNg4xp\
+                hzGpPMyCYwoB19fVYwqjXn48X0Yt1TOT09Q4htQJ45z/L3UiE2J7+2+Znh3CSkO//coi6b+QilOUzP68PiuzpT8KH\
+                p0J/irErCGu/4cJlNQKAAEAic92H7fRtmWIIy8wzHmaGYn6BuV3VZWrcX+IBi9SbbyPJhK43uSIdH71dlOHbzNOfM\
+                nW0xADRclfyLXG5Zffw4uP/5gv//fw+oq6XaeskiOt/T/+1LEXYAMXRFf7jSxcX0V6X28LTA/t1/P/qV1Kr8xaBY4\
+                265B+pW7EbaRNtwlZQVCi2noZk50gU3/58sK4IEIQqN6+tknjq9L2p9V7CDN3AQeomf9TNwp+fX3HMQOnCp4dQrt8\
+                zvTqZ2luVO9I3wDAZU3qK0sjzEWHNqOnMt3Wsu9Fb9DBD1sEz57HKJBwIxofs4ECoDW/6knkWoFQmM/GI8MlH9/5z\
+                ERpDaiIzbz2adQttcHn637uqd4U1uO6weVAFABAAF6bj/3dhh16RZRhP/7UsRaAAoMrWmsPKuxRprrMAwoPgGZTWD\
+                wJnQZv/NNLDmoRiyNEt4qsvsM6DBJqow2oET/iQDn3HZgGHf1HOgb6rbu0wkVCYoArdnufq/os51m4HnKWIMBUQMi\
+                03HGOesO/zkJEV2wUw6NZsPiYrKcigIJDvvOm93wKQ61/eTfeIRvfcMeoQaE25AGE3/MLoG/iJT952MVvsz3J3IK6\
+                aE2pPbjvcrqXrrqH8AgRBRTjYH+/jjsQdZnCb9Erau0UAF6F7wn6jijKl4wDGJ36i8+//tSxGcACmCvSe3AsMFNGq\
+                x9hZV2gLY+8YBn0QSFKPHNocOI/9gYPGJ9ykdB2QrnLFGbpRjLUnoHIaL593+obOCKKKlNtsf+/qsyjkpjTDqUdaD\
+                VprQLsexxtaCiq4wRZnHdMfGf7oQj6HgsZvuNZPQFF+/ygi/0gKJDvbmKP9fz9VbVjE4wVy2du9T9Tugq9OSqF8wB\
+                pQzabTHWojxBpwvh0LglIXefyOFWJ5GSLpPGIaiSCfV1IoGgwMjN7Vqk+y4cGeQnHTNSwFB3/PURFP//+1LEcYAKG\
+                OFdrLSu8U4cK/WHla6xFp/pQVt89kE+in+ziP4jklnr/cA8WpJI4x6z3bhPTJTxOSS2MEHI63MxA8h2xt6k0RLtW/\
+                OHzIYoXM+l9ah3ApxWXxw7esdo7Cg/U1yAgNFt0QMEM1v80jfSgR/9IMdZ75/q3+hFCIhjAmNpZXJGP21WMA2BJRl\
+                JkcM5PQSbPvO0EUMGNEzICNAxwnzTJ25T068fdVyAQRonpunYpKAHAAy7/uyCDArl2qz0yk+aQ8zt/WilOvRgQv+0\
+                sP/7UsR9AAoQ312pMLZxUJ7sdPaKLo930+j6VeGVANQNtNtxCmqMSXAJYBQ4NI4XJAjyYw/DsFqe5TjR/ZPF7zMvn\
+                HaAuFr87imcNf4O8JG0Ueb8IIZQwrCtoWcxl5f0k/6UVGaGf/ug6n+wz6E5AAAQjKQOc40hEwwMNBkrV/yeKLwMNB\
+                jAQcxhBPkJC5j8w5KIhV3uGYFcKcnrphIINg1FB9IxNa1mAckAszp9ZbRbVycJUG4eUitv7GJggv9VZktiVTq/zNB\
+                MxTAXaTkmxQaB//tSxIiAC0j1ZeeoWHFKHqv884sGKkaQGV6jZ4y4YBRjExmdoWa7Gxg8Rtfyj7osnQFyvJ+/RzES\
+                glkXf/yuTgtN/74p/86O0QCSmdazf5+fmCeoaDTbOvumqVo3VcSUqPfrsoGWxgwGf+4yiqE8IHoa2G0Wo2kB/Xlae\
+                3aHJKDXo7AMMWGEmaeHINSEDgxs+UDQzEfGRwHENTvcigbStmxyQWhkTVFEzQIwQiE50NEuHjL2MBXxtI0BQIC5OM\
+                ZCgA7SR7DTaK6oV/u2+pRTgZ3/+1LEkAAL8Nk5TG2ngX2aKrXHif6ro5J9gABECJ2yAY9eRv5Qv5EQGvk4qGDIpTN\
+                V1FCbtk1m5HYtizJWOj55DxYjNfKIXCl9DM0nD0BZT2XKR78zLpt8OXkft3RHHJVxxShKykvQLiU7rO6augMYaSkU\
+                kgHasejsNNJjxAku+GAEAWVQ9IkyHJ4WNzi4Pk6veP/4Ji39789jVPKtcKR4hgcRCab3W63H/hfuIIujJAhDMtt29\
+                B25IM731YWI9HEvynTxJdSIw2y1JHAMsZc1lv/7UsSOgAyA41WtwLMxUhPpNZgaZOSZMFNfJCkUSLLfXrcAP/MS4m\
+                Xut6UmulcOlczpxHds8mBc9MrFx7MBP1/aVgb8aHTQqHIdOYpjLL3mqy0fr28yL+N19ArVmyCQBYSltwGede3i+Fh\
+                qhsSAwEWGdmRWY2sC05jI5f/48B9CTWNN+TRl1/2TFEQI1SS/KAMDJwgCLOV9ymBGE7ohG1egV/c7v7a+rE/F/uv6\
+                sCNPkHQpE3JZAP1A7PH7UMttEEJkox/OJlKkyqLR/H3f//SK//tSxJAACvTvYaw8S/FKH6w1hgoeDnVF8ZUrvtzRk\
+                3xMCGg7WQeT9Cx/Q5RhO70D/xNBFCJxMpFQedyjzPWrF9mL+O1+0ioHdAZgGUTcljY/61eSPXQKOvUTXIn3rNouyQ\
+                nXzH/5yrbgJZUCMa8h2RvhTLe//j1XJYC96hW/oN5tTvZHoYp6mWpSt3od7mJ2yTcUW7/13/rm1CYETZiaQGHJY7c\
+                TTrZwkWMEM5g3TAK1zgDKowjqm/Vmr7jExc98DMgXOHCJIXuf51i8okQz/MX/+1LEmIAKZSFXrKxPEU0frLWHlTZ/\
+                oBxRS8GEC0WB8YiHNlDU+TR3/quqv8AqMaTksgHwjzuayaHulyiCQjccArRah0mUstxyuuuAuM2zWEzZumkBP/CA3\
+                w4yCRfxcPG++IZGL/ggtt9jEhkLfZqVqdBmKAqksmzhZ/6xumMUYHI2mB/08VZc0yNt8+0ODJjOwbgXtEKQGT50KI\
+                FxDtzR5WIUegT77Rfx0CUOkrA8cWqOWtGTb+LLeXDyb+f6/Nje746/cmUWRrAoVc/R6z055f/7UsSjAAoo62XsPEu\
+                xOBBrdYeVPqoWCAAAA2tJgcdSA3gj0TZIBQo9EXFgt+KMIeLbZqLwD0TF26Q+CdLwZMLGgozX1qGeCwwXATBq6los\
+                sY0QQLjUjhn5HLmKf3MUmUg31pvf9BdrfM2/53Z87rEggAQAjycoGR1HrQLhyNsMEIafI9Bgc5t8kF738+elYILWX\
+                S/nNQwFsSYAGwnBgNiXmA4hBQbBKNv1iBAUdEk5MITKXUZF9M//RRNDumEnUh5YLsrOapV6vposAIBUkkyP//tSxL\
+                EAChDPY6eUdrFXFmr1lq2W/uFMpg1qB518RwKNN8DchZ0Y0FwatvXIFlyiosowNe3fHLLHlN0F4tgeiGqukJWF+ZW\
+                1OiMOv8//FIAIB7jxf6RMcf0XceGpN/9SDZT3o/H/06jajokel7dgCBFONpAb+UsyV4QjBs28eIiRaBtveECrL8Ir\
+                z61FF7GmlT82lfIMM6Y3QSgmlAGFvHx0KhjUH5NX4WCe0qD8mxVgIUTcZERhww4Y0KDhblot8Hf7Kn/+gyiU420Bz\
+                TilvAH/+1LEu4ALMPlDoO5DIWgU57QdtHgE4wRxoLex4UQR1pm2DKWgwSUB0zUY3hq4sJRY4U0ywy3hzjR8b7GALF\
+                hmmKxv0AuzdFEcnURQgV+fQy6EzE6NU+pV19/U2VBmU5NXMYMEIzjbbbAwlq/i1tMpiDYR4UxQQM3BkGL4QTBWM0m\
+                8AF7LvU6IADZdjx7jM2kBBOMtNYIzRn/xX9b/8qqovyPws4U1Cmn4WlO2finyyvuNKviRnJmKU92+DQV9SpuSAYXW\
+                qJ+wYneVCv2X0XQ67v/7UsS/gAvQ9z9NvPLRWxVqtbOOngwE4yBWyP/kWEvY4CnJoEnN2XX19ZF1j5crA4VQpLQmr\
+                m8aE+h+R431fUlnpSnBt2W1sEBfB82do6G0X0ZCrmNubyuDfXA7wcITZbFKp3HliSgTLNT7GkfZtKtZH+JAquucgO\
+                B+9hHEwg+oxP3G8G3wXBDlV1jSlO4cShCE/qE5mNd0u6tqpu+NdevbjZyAQgwtfYcyUTFGXYKFHkd111ZbIbqKCzV\
+                4Loln8UhenEstnqZfnSTEg3caGIP6//tSxMKACwDZWa7k57FnnKt9l5V+uog2HRxR30JjNRI6vc1CoyoNCB7PDbWU\
+                nq3OiB9Y7UcwIPwGU3I5JXAP2t4xgSUoWkO3Jyo3A9bEOsPF7sCmUVzRS+l2eaG6hCfue8b1gwc+IgMOK2IB0hDeo\
+                m8YDvMH2qnFCMj2URrKwH+4py5bZyfSSEAAADAag1JANboHjmHrfAqtQGecFbtqCQsYioiAhlSQJw3JdYYhL3M+Nr\
+                8ISMhZnxr5eigifOtQzxkoK/4eHIPlT68Gx0DAR6j/+1LEx4BKROVhrDxLsUeebDT1Cl4MxawC0vdrPN3frWgAAID\
+                gTugH7ppTKn1gIRen9E96ZsibgY0r8voFNVxsZNp84hiSTmC4Xz20CZvH/+D4GEbUD74kH3xPEgZvxE34iQlNnFmb\
+                1MSZ+Y6FLlbdPxtdNBAAAHAzyl8Yp2sRYHC04QsQgJrLhgQgc1qdgwbiEEGBmgRFtCerbGqvZwK2BQ1MFqyK1+m6j\
+                SLXP/CLu0mk0yk2TZnFIDhYgIMjEQDSRnqRJ+lSJN/Uaov0Nd/NHP/7UsTTgAoUq1eMMK6xQRfsNPKK3n+ba3xx//\
+                /QHQAHWq1NEk6o8Ags2VoGi9QZFRSIScQUSAGzsfIbLU4tSz6iGAFKKoUXnKTfX3VuYPf3eh8MBgeHPufCM6EKPsX\
+                j1mj3/89IWW482I82JX5Z+Aj0sSToBgAAAABeBn3WDOHriIhSzfHUw+JPrTYNGRYysJRwfoydUM9EC7pgYKBiPuNR\
+                YZwWkwtnimhfiR5JAlI94VhWDcorTHvmSooLVH+7KBChTc6jajxRAKBqAAUFhzgm//tSxOEACpiJR+08ryFLneg1l\
+                5XgyxRJSFp6SMQID6uOExA1MIiCieZmdB6kBp1iGM6SIu9L4vFVOAoNCn8MZRDw0fStiCL2gy2bxqVd7fEwDGcQrn\
+                8/Xx5H144OilnTUAkISZHmOopBwWN/KD7ru+cZ69y/QlKmq/K/9KoYAwAAcDfa8xK24KPjIKjwHmH5tHMYsiQdAxu\
+                Dmj8tfZ1CpgAvjgh4es9pWNqDWJkGGTNAhtPsqjLgSYCAl5lNrOBbgB/IaSfqHcG+m9y90x2lNav/+1LE6wFMvO0x\
+                LmDvAVyRpq28paDSmxTVS8yOKZfonTBamPa62fNvSCMAAEAIIOqVAf8/SO+pZD6FiFI6XnYriq6qJFmoxxnjj4RI5\
+                kiuX6fF7NfKRhIKWbM+m5sCfDwZ91LNhPQc5aqptMNkEcGQYMPFtBInG7/rJybt9I2Rb7MZJl9HzKOmDIAFFACicA\
+                GVl712NLbs/IJBaUIEDJxwTrsWyRCHUmdWB6zwgwbpXo5PJFlDSOkiwg2QjUHefjt866HXNv0/zuGI6q4/xX/5gP/\
+                7UsTqgQxokTONsLSBg5plmcydeDdPB9ul0kDoHP1u4eA6v6XEiJ6ROy+WJpEwQIxIacskAGN8HeHj4ZRLiarpcaD6\
+                WdnjtCIIa9xn7k5SmG5jdPQzSmDyZvoIC/kDpPcc/VN4HkaHSTK/5Eq+18GjOCoE27pnDX1J5n/ztWvHyFzBgIsyS\
+                G8wAwECSlIhK3UX8xUxSoTryVMo1iYxGgLGtum8g8AO+LqdvQTc9JTCyyuE/BidteexuOLI2D7MUNlsigt36EL4vk\
+                X5EyE+pb6v//tSxOYADPTnLS7pqwF8mmc9vDVg6H0T/mqPiV3dqvpnqn7cna3/IFv+moBAcAAovfANaaTATcWZCIO\
+                mGdiOglRxtGvgwDPK3vHSdKvxwluV0yYvqoE6V5kJUQdJY4Snzgx1peTj+DdH/Gm4ZvgrtxYe11NQeFW2iT879Q1g\
+                ACYAAAO+AQ680he5VoOExyqSB2eFmE5CoOMXg0oHDwFi81FukImLCtjFql0YBbS9+4zAHArdnRw3PqgiRn9x89S9S\
+                T8gHpIc04k+x5/WdXI38jD/+1LE4IAMHNE1rjyzAWiVq/2erH5UHpBShwT+r8g2oACcAggu+gOixp618LLFA8Zd4h\
+                mIUJztPTUMDgpBdWCLrg1ljK6E7ZgppJLGaSXHxvL0a8biJDhgPlAYoZ9R9R+pOkYH/l/Gejl9FTlHCvjF4jZ+36h\
+                tOAAbAAALmgEukwsA01V9AQPmx0YfeCRlgtxEEgSzAip2BsHrY/TCqWaxmOyrsEoHRTdPnp61DqLaL4SC+6A/0VE+\
+                43MRYie4e8s/ixCnruWv+vezhzYmpieW3//7UsThAAvxG0eueUXRShXotcaKWCWSqx+pQ8+/576lqgAG4AJL7ACXU\
+                TzspegRg5oTKa9liZThlmhb/OqzEF3P73czDEdT1l+X6hmK+6m+IKuoDxVk0Lt7JPUt/o66MX/xf6/9g0QVCGasRt\
+                3iQmCTZ+5ah/QqEIAAAAACUAGdiLskhTFQMCjR0MDsuARCABOYgITSYW0U4IwVGsAXbd5dj+N3NoxqMv1rfiMZr+X\
+                qu72ZRBge3//77LugTf7y1lDo9h+oCjH0BwiHADfopA+j//tQxOYAC7jJP65lR4FbnGh1x5WgPdDEI9XYxF6CxRc1\
+                aFoOrUeBCwo6B/3Jt6GNvgBfyYU2w4szDkBstKgVr8Zfp1wfC7gV2i8XHsig4kYu1r565EMiatSqw6JS5139ZhDqf\
+                ISfnjRY6c1s4bKSMeroCggYx8kHhIm6Hn/kP6F6G4YqjijisAGmbDmh80IYORIu7NsGshJ/DJPK93TjZUD3Domvnx\
+                JdEQ22/8QWYI+t09ymEg7P/jyA8LP5opHg59e11f+2iY09zSRcWWc1Kv/7UsTpAAzE1zuuZWfBWBOoNbyk8BVm2Kd\
+                nbv01xRQGBgBF0AfnyX0rT2cmFxR96OX5LfmaECeMspk0TQgByIHvTuCIUtEQu28v7SU1egROVa3n4aQ/As3sPKsY\
+                owhp63E3KbsrOHR6BCvqFJ+FEEl5R2+olmDHM6ldi0TwdRugY4oW27AB/yi+l460wvpQKAHUaaxzKzHFrXjNovxO3\
+                VcgaoYA//2hz8Bx+UhE/yidfarP/8Ixv1O31KDf3MDABiLQoCCDNXKJKqy/L8N6BAgA//tSxOiADUzhM65kq8Fsne\
+                hlp6nuDe3bV2YjZCAhMJ5hGEBkhUJlLcYuAvDKICcZGciKjI+gx4fVsfUeNJM+1LxPYxc+EgyV42FaIrqaWSTGcXr\
+                8v2ISZCFAAyCNoUl5dTBAGG2oxJEYMvVegOI1Q+kXkG/SN0tdVaJp/Wie9G73L9H+qj39T+gSECEJJOJIAf+U3Um9\
+                QW9IMsGCgdAczmJbmLRAAS94B469qrs5wnKZaoerQnEOkx42vh3puagVSx//favAnjvcsX/wxt64Ve//+1LE44ALB\
+                N9XqD1p+X0dpqm2itA/+9Kq2Pr8kMH/sVHa7LHXqiocSCuYBSAQBOTcAbqRNlDppuZGroJyESNIxs69KZpr7pTCTy\
+                Nx4QZ0+oBQetl+GRIF8vRYLogxN/IQViKL/UxyhP6qPG/QrPO/d1a+qD+z90IXBAgAAJA/fKaxPspU+YChsOQCZGE\
+                nGgi2XKlsdSiQOAKAIH8IGpYUE3fl2dYGkBEKSaSpKO0Y4DYOwnoDtzINKNTZtaaZARP5/8wHOIh9cyKKb1a2KJw8\
+                ///7UsTlgAoAzVmsJFE53B0kod21ODQum+rXU/3WZ/b//V///WLoBaYk5XGAP70bD9YzDcRbQLZrCMWsrU0c1gNaz\
+                gL6Jbfy1I+qvjuP/yuRaXJgcMb3iUM05KN6jjYe2hngU+8JxV/UFgmHPWjhR373qXNDGqpPFzoL5V4AAAAQAQgGW+\
+                WtylshgwUhQNmERMesyRgUELnajGm6OPDoWA4KBphtAmcgU+8gjMY7UhqVpyjIYpcf73uKeUSHhYUtT4qoYraUH8S\
+                +GKNnBzEV/6tw//tSxOAAC3TpR6w8T/FBnSe8DSg4/8xY6X51by3XrT+pf+v//p///1IIEVDQBQxgl6CV0wKEIeZ0\
+                c1l7N70WhiDt0tNHyQzhiNfz5XYv0GGdwAyUN3m2N0VT189QDocrpt5Hh4l1auWv1rnSt17qlf+znG/WaXdn//d//\
+                9MAABEQAVIDxMN8xQL16hYFn6PkEBta0tlTQKSmn1GzALnBy9YlKYt6lMgOsDzQd6GuWlLBqERqbes9Mw9Y3TNKfh\
+                /xxN5YpHB30Nay8pygbLsvdlr/+1LE6AAM7OkpLu4JQV4WajTym4a1eq7fqNb+Qq/r/o//6fXgggO1VuNVMMwugVa\
+                xv3VYQSzFJ91XMrRKUrRMBkNAQyutGbmnUzlEDYCyLPSN3K6SIQCSoaWedPKMQ01SCa+qHdPM76jzSOb55UsN9V5q\
+                qr1Tv+f+f/6/v//+j1IADAAIkD/zrYYN3P3WSBdZrdFREITKXzeyE2s6loRFyYLAcNCt1UESwB1YLAunc0w3IuAtV\
+                Z1kVCfi4o4m2phKybP+tsjf08lE1aql5eTlxv/7UsTmgA0U5yeOPPaBURzltB5IuPWed2/3Vf/q/9BCAI0yCrhwp3\
+                QMLhR/m4Gy5yRBRccUp4FuXbMDGAiqBkS+Vq91lrODdCHJEUFvtcnBGrTqCZDUzIjw1o0XZu0qjJas62bn/qakXtQ\
+                uhzaL9bvZ//3U/+3/rr/d5V5Y/5icIrqFUATlTQhYH38oZh5cM9yQLT4+q3s9b5jf7QGMLEnsaw7jPfiQhirf3rfd\
+                0eFZZndmnegYMzz3IaGCASiarUc6UXI112Imv25a4vhz076///tSxOYCDGTnJYDyZYFyHORgHtB4vk/u9nnPVf1rH\
+                lO5BiuHiIxIHBwvt4GCRrcMYPJds1pkwBMkMXWdq2d81PbfADV4S5SPnppRBIkGU00kjhbOnQ4PV6ahTG1JHSUwBf\
+                RzzjYrGOqoxaOURdypmqo/Tt+hb6Pvi1+p0p/T6QMA0AHf/LOkdM6EWoiNM2Z/gUD2KwbLJDyjyoQofwxS1t5b+5b\
+                uTIiGUv1/cadQBwEI9CgcPpOCoRmNLOwxFOt7T6jo4nbqNblbfs9H+d+e9v//+1LE5AALPL8nLHZowWOVZRweTHh1\
+                X3ez+30qEQODAT/QyR5zwUuj6PhisPFKax2TY6+uQjKoZ6npN7yIALJp8wrEuBEegxwiHzEWADbUxs/M1CXC/UrOO\
+                thasmXYG9ZZPv//+3+7/9n/VQBASCN/H8O1HbDTW4kMRqr+BhrgyhsvzILVlF0kRosIXYk9zv4U1VMcymDm+ne4aS\
+                WXBegL2HNVXUk8gYj56d2TWUxGZW3ak8oF31LdnLz+GD3FG2Uf20fdV96uVq5v3drGSAjIBP/7UsTog8v05xgO7Uv\
+                BjZniwdoemK7/M8I2wwBD8ODQVMhridmDAQiu+kTmcsZbFzitEo2oUd7vNZ1RVsHmKr+tRMg2MI62UUTRYb6Jqgit\
+                bVsPsW4787Wd6Vh/qf1H/b2E697PKOpo8xsi9CfCXOpsAAIQbUreCvHFlhYDLkMLkc++PCIlqcQfIKOmlNVVAlMDc\
+                qHDetRgEMwo5rc6TYoQLQS4ttlnocUpPQvUP5Lm7X2eVley84TVlPWO9nk1J2Mul+pbldVzN/K4B+ZcgBxP//tSxO\
+                UACwzPHMzxqYE9EuW0HbSwVqlcoWCoCFphBGnAlcYIALDn9jUovX6aUmHxyvW1jraqJFgvyD0zr9EhwaW7fLSg7qL\
+                6dVZUJdFbp6U4FMVV8Oehv+t/+v3tXpTprfu3P+2pMC/nclcMMDCwhyjlAhGHx6HViAmIAEBwBskh9wZ6WVXGMiBG\
+                SyMU3qSNR1AYvAjcXTbzhuIzBURu7rucLRKhio3Q+tAWrV6aiw/51Kbeg75Ky1u0eTtYrur7St17H7FEP/Vm0IQ6C\
+                p/dj47/+1LE7wIMRKkYzPJJgX+SY13MzWAQXxjUGGH48etTYBAyqrcoi8Wqr6yQzCBUDJfhvWkQUAXQ0j6lodxXQ4\
+                5F/OG46xJVd1nDAuDOoMl1nlufXQNeP3MPep/+t/ukbmaZnUua3L5vzKulEAEZqMkpJ9FBQGIAaJAYAmI42EksqLe\
+                FV1J94BUUkQMcmYz13+TC+FMxsP37DWCkH7zBjiI0gczRl9cmEA9fL+T8pf2/Rt9qB9XvyvT2fRp95AT3f1lymEBq\
+                HB5i3scNg41m5VyuLv/7UsTsA0uwpx0g8mPBTRIjzB5EeA+OCMkRocZUmi9lk+EEB67WWiGDwu1XWtjIvh4lrU3lg\
+                lnbUrMj4XKZk0ZQ0SYURcxh/THRx/IKacGiz29DKyb7mIGpUlt6S4s073vYlSADv80jGgoNTDoBMSX4+yHgYAX6lM\
+                qm2OS2IkKzSJiFPhn/KtIMBRZy3Rda2OgnoyLPqZM4DeQW5kq1nKJAyr6T2OIGx41RzwRSTe0UcCZrCYsrUGlV6wK\
+                mfwRqZ+ra1iiDFN0LUt/E7B74DLhE//tSxPGADGinFCz2ZwFyEqMZHkzoDQUOzDmoNthhnLlUtZ8XZvRswcUQcY34\
+                K6B+6SwIgyBu3smHGldnoPSYRsbUna2Wm+7zuyldzuNoQo9fhpdRtisVhdiHvzyUKd4xldKeNp/71UAzzLQ/a6U8V\
+                DhGQSIoL7b289TMzagoEAQaMdc+2nSAwwfOt60gH5Be7ugagM0hpIvWvHsWOpfaZaMUpXyhpZPqNON5yWuG/qmyFb\
+                pjae2IaUXch9zxQWABo9Z6m4YZ+IgYGD4yrSjdng7/+1LE74IKLHsdQXGlwYyR4gW+xRgM3sXs3ohI4AIJxqwlX/x\
+                z+XpkF7Was/5SHAdLV/bMKgTjcQzevaQbhtMg6NB8MCV6hBOtvUsltc4VIKY9FxE8pDgB6TppApaEO0XRKF1G2JHT\
+                7mWl3E7DDJ//1jWqtKMFBjc90yIDadFZdS5SORBnQG5o0FmCbH1FAJQIEj9UR0lZWe4XCZ2usyFTba2lbMz0oXs7s\
+                6z1su/ejbsQDciOaWvS1yWEaTSoFEIYce3ZtUR28h1J71pr3oHPF//7UsTzA00Mjw4jckXBW5GiRC5AqALiCH7TTn\
+                hMoimowqlyuzVM1oWf3vsOuW0kAa4Ki1VnYxDDn3XVaYiwVOp+USt1KvMuQMw2hKzJJKiMLOUPMvFiS549sfCDjy3\
+                Do5zhatm28YBznVu7Y2Lb1WkAEO2xZCNq2I6mc9CJkNoJqkRJ0NyBwUdSXm8mQgQQjVreoyDVBEnW9TR+FnroVM8l\
+                TZSvz6hzEMdOic2W3trZNm3Ci2yEUDo0gKqTTZWnCaSei163PWBkohdTcyIilJAB//tSxPEACtCPGMHxpUGyD2IJz\
+                S0oaoMPvfcqR6MtgURYepct6v5MaCBGWfqSRSA1C0f7LD1W93Wtw1qOLRUpc8+/zzid7OJutgr9tR1aqKGV8brXoo\
+                xiN7vvWO6ySkAABJ//u98fcCA54zERK1m7Z/lqRjIIRHdmz/5SqwyMtenD/cxuLQZ/qahA4Pzn/7z47nbZZsQZSOZ\
+                5S0/b1QmuZsjqmhfnImVXWvzu7floTesUj+PoRk5VSXUs/Qi8tkBoFDGKEG7FigpbMSyN9H/8z5n/+1LE7YNL/NUO\
+                DczvAXGRIcRtyKjIQSXnQtYOCnJpsdXaSVhQuYNd0u7GgTpPGup2dgLq5/4A5LXr8St1N3WxfPcA2pbL1fE1vA76i\
+                HUE5TJUntT4v65amUy7HO8Oe7pvumcCO/TbdL8dpvsdcxzv/3M1AACVdVaH46PSOmBDD34f/S+ovAFnElNm1LPBn6\
+                f7GZJfZbjLnnVRbKfXoVmz4vINdMOFGJZoM2PFJOkQVhL5J7CJSYe4fSxoMiSlynw8akyi6VKteXagApAFnv/W8P/\
+                7UsTtAQwEixBDbmSBKREi5C20qJt0AaIC7AhbDxqkyS4AalenqTYNyNtl6sskQRUvexBLLepaIl8zWcKibdWXWWh2\
+                +6EblotiLal81W6UWX1RmPd6yJXqplpchrrIXmZ0U6ojO7qbjMx+Zy8XUtUAIASLn4Z0kbWgYWuY6muaGS8i+VQO7\
+                kts6XQsIDtGr9TFCUK1tLbwb8x+pR2nSVmzuLXRwAf/qgLUP+1/3qRo9tOlvmc6glCvmqt9WE8UdQdJuf7u+hzuPZ\
+                o+r5Wv7/q7//tSxPWBzc1TDK2sdNGIEKGBuKIJ/AQg0f/vWdynChqD1Ji06bIuhIkB0CZq11QvkaaPYjwycmrjA36\
+                OgFZ1WqRJhwoMQxJhBVjTwnjVkigF7zb3zrhgFcNmBZMQSSmgfvdCICDlqDFa00pCCIpbTeqBpbGoZeJRshEBqClQ\
+                daUWodU3tfmzFMaBrNvNzTgGTNUtiIFLu1obdCU0PYhAGtVSUBBpYidvYFzyEPbxwwIJS1JzrYJUPYHJJoym0ajXd\
+                wxswtbcFEehI8L0rpmGCkr/+1LE6wAKxIUVIeZkgYiu4hm5CXg1Y0tOgQGQBx0e68zYSjBY5v8zZyq8/a3d4tMIMR\
+                dpEOhTU4TtD0OoszfpZ+bwbt5OnEMyL7mXO9WMXe85dJlx5mR2zp0y38zmvV5PplK94lqfueWPe+lxC8HEoacTkee\
+                VPZlU3LH2gYxcnomIcfxci6I6ux+IYVKW+27ZFFjia2d3spiNvOhLfb2ajpsyNUvptGt1sp92122upr9y3y67WnG9\
+                8Uoyf0eT2s+79OM/q0lvrXdg18c3Xne/7f/7UsTsggxIcQytTQsJaJBh1bmVaBAkR2tZc8dE46ASBkchGJROfYCtJ\
+                kUks1THN9po6BUEjretqI6BEzob/6uPig9oRgqJIZNDwswUSXWqRW4Xa5DlEgozMPLdImLCGF638ZTyKmCpU5U0Lk\
+                na6EAAAG+tL64VtyBnwSii7IuihXUnXXdQX6NnXodV0VpmBBWuuoeZmvkor971PvN4JOnICuQ88gy+pkpZevqkQjN\
+                jPpgqYxiUnQb3CzzKnC9GWKq1PHLM/d/ftf+efIpvt9QZ//tSxOwCCsBfDgwkUEGfrqHVlg0wg3+XtUhwHwBp5DyG\
+                pNZf6ygIVPPJlZ6LVAoH1adzKt2qKqTTMibPcax6tkV3oc7uqta3ZjKzH7jLwk01vUR+m1DGhvsX91wVZ+Q/Bhbur\
+                f3dDrHLoKE9sN5qJBABACX2rZaqN3OiMAP8FvYk+3S/jr5FwDT+msnZu+2SSjOeuk9YuZEKPNPLIj78NJX11M2QO2\
+                3Kjxn2pgyiEKWm3LlG83vfNTQHoczO/SNa+QPsWLLytRTtR309cjZn+hb/+1LE6wJL2LMODJhQiWURIhTMHYiVFuq\
+                ARqUar/KiQBFGLzk1UlLNYcb/gYVVNS16UVVVVVV11UKArxj/+sxqAqpBlLNY0DFGqrmrH6qUbY1L9aq/dmJmoUTB\
+                SbzvhfxskEgvzQgUkFYuYOJDfyfiyK/xXRX8CUxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqARuyhlQ5HZ6ov/0VEVPqqKn///6p///ayywyJv/7UsTtA8xJCwqkUG2JZJ\
+                7hgFkVoVZQVR7P//llI1ZgoYGCdDJWUMDBB0c///ssyPjWWVLIrKGCggYIEDQcElahyUrRUOS21/aaTEFNRTMuMTA\
+                wqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq//tSxO0BT\
+                KFFCwksb0l8I9/AMw2Jqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqr/+1LEygPKEW6YQQB8CAAANIAAAASqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq\
+                qqqqqqqqqqqqqqg==");
+
+            setCanvasSize();
+            startGame();
+            runGame();
+        </script>
+    </body>
+</html>
