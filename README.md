@@ -2,6 +2,8 @@
 
 [Canvas PoC single-file Block Puzzle Game](https://alonrotem.github.io/blockpuzzle/)
 
+![Main screen](https://raw.githubusercontent.com/alonrotem/blockpuzzle/main/Screenshots/main.png)
+
 Features:
 
 * Using HTML5 Canvas
@@ -23,5 +25,3 @@ Features:
   * Score and high score in a cookie
   * Sound effects, turnable on/off
   * Restart button
-
-![Main screen](https://raw.githubusercontent.com/alonrotem/blockpuzzle/main/Screenshots/main.png)
