@@ -1,4 +1,4 @@
-# blockpuzzle
+# Block Puzzle on Canvas
 
 [Canvas PoC single-file Block Puzzle Game](https://alonrotem.github.io/blockpuzzle/)
 
