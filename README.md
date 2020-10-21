@@ -4,7 +4,7 @@
 
 ![Main screen](https://raw.githubusercontent.com/alonrotem/blockpuzzle/main/Screenshots/main.png)
 
-Features:
+## Features:
 
 * Using HTML5 Canvas
   * Animated interactivity
