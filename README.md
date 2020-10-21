@@ -12,6 +12,7 @@
   * Responsive layout for landscape/portrait mode
   * Tooltips
   * Gradients
+  * Rotated text
 
 * Single page
   * Embedded BASE64 encoded resources: sounds, favicon
