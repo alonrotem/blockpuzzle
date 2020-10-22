@@ -541,8 +541,16 @@
                 }//findPotentialPositionsOnBoard
             }//Board class
 
+            var cookieName = "blockpuzzle";
+
+            var readCookieValue = function(){
+                var cookiestr = document.cookie.match('(^|;)\\s*' + cookieName + '\\s*=\\s*([^;]+)');
+                return cookiestr ? unescape(cookiestr.pop()): '{}';
+            }
+
             var getCookieValue = function(key, defaultVal){
-                var cookiestr = document.cookie;
+                
+                var cookiestr = readCookieValue();
                 var cookieobj = {};
                 if(cookiestr)
                 {
@@ -571,11 +579,16 @@
                 var cookieobj = {};
                 if(cookiestr)
                 {
-                    cookieobj = JSON.parse(cookiestr);
+                    cookieobj = JSON.parse(readCookieValue());
                 }
                 cookieobj[key] = val;
-                document.cookie = JSON.stringify(cookieobj);
-            };
+
+                var expirationDate = new Date();
+                var tenYears = 365 * 10 * 24 * 60 * 60 * 1000;
+                expirationDate.setTime(expirationDate.getTime() + tenYears);
+                var expires = "expires="+expirationDate.toUTCString();                
+                document.cookie = cookieName + "=" + escape(JSON.stringify(cookieobj)) + ";" + expires + ";";
+            }
 
             function drawSpeaker(drawx, drawy, color, scale, silent)
             {
