@@ -83,10 +83,11 @@
             faviconlink.href = 'data:image/png;base64,'+favIcon;
             docHead.appendChild(faviconlink);
 
+            var mobilefav = "iVBORw0KGgoAAAANSUhEUgAAAJ4AAACeCAMAAAD0W0NJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAPUExURQAAAEz/AP8AAP/YAAAAAHRSHUkAAAAFdFJOU/////8A+7YOUwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAPtJREFUeF7t0kFuwzAMRcGk9f3PXMsSwp+sLAgoFGDemgRnwcexdXgrfQXv8Q9dh2bDG12HZnvxnjPNzreF69BseC28CK+H18KL8Hp4LbwIr4fXwovwengtvAivh9fCi/B6eC28CK+H18KL8Hp4LbwIr/fi7RfeSm+88ST3Oud/pjoXfqfCi/AiPLwKL8LDq/AiPLwKL8LDq/AiPLwKL8LDq/AiPLwKL8LDq/AivA/efuGt9MYbX3Wvc3481c3OhfFUN8OL8CI8vAovwsOr8CI8vAovwsOr8CI8vAovwsOr8CI8vAovwsOr8CK8D95+4a1UvG3DW2lr3nH8AbhkwYvSHPVqAAAAAElFTkSuQmCC";
             var mobilefavicon = document.createElement('link');
             mobilefavicon.rel = 'apple-touch-icon';
-            mobilefavicon.sizes = '128x128';
-            mobilefavicon.href = 'data:image/png;base64,'+favIcon;
+            mobilefavicon.sizes = '152x152';
+            mobilefavicon.href = 'data:image/png;base64,'+mobilefav;
             docHead.appendChild(mobilefavicon);
             
             var colors = {
