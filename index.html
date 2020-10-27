@@ -77,12 +77,18 @@
                 +7YOUwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAC9JREFUKFNjYEEDQAEGGIALMDIygjEJ\
                 AsgAroKJiYmBmZmZWAFkQC0zUAGaAAsLABfDAhtC0iJWAAAAAElFTkSuQmCC";
             var docHead = document.getElementsByTagName('head')[0];
-            var newLink = document.createElement('link');
-            newLink.rel = 'shortcut icon';
-            newLink.type = 'image/x-icon';
-            newLink.href = 'data:image/png;base64,'+favIcon;
-            docHead.appendChild(newLink);            
+            var faviconlink = document.createElement('link');
+            faviconlink.rel = 'shortcut icon';
+            faviconlink.type = 'image/x-icon';
+            faviconlink.href = 'data:image/png;base64,'+favIcon;
+            docHead.appendChild(faviconlink);
 
+            var mobilefavicon = document.createElement('link');
+            mobilefavicon.rel = 'apple-touch-icon';
+            mobilefavicon.sizes = '128x128';
+            mobilefavicon.href = 'data:image/png;base64,'+favIcon;
+            docHead.appendChild(mobilefavicon);
+            
             var colors = {
                 game_background: "#303030", //dark gray
                 blocks_r_shaped: "#38BC00", //medium green
