@@ -16,10 +16,22 @@
                 background-color: #303030;
             }
         </style>
+
+<meta property="og:url"                content="https://alonrotem.github.io/blockpuzzle/?score=889" />
+<meta property="og:type"               content="website" />
+<meta property="og:title"              content="When Great Minds Don’t Think Alike" />
+<meta property="og:description"        content="How much does culture influence creative thinking?" />
+<meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+
+
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0&appId=383087475054247" nonce="FthWUsx3"></script>
+
         <canvas id="myCanvas"></canvas>
         <script>
+
             //quick self host
             //python3 -m http.server
 
@@ -101,6 +113,11 @@
             mobilefavicon.href = 'data:image/png;base64,'+mobilefav;
             docHead.appendChild(mobilefavicon);
             
+
+            document.querySelector('meta[property="og:title"]').setAttribute("content", "look at this!");
+            document.querySelector('meta[property="og:image"]').setAttribute("content", 'data:image/png;base64,'+mobilefav);
+
+
             var colors = {
                 game_background: "#303030", //dark gray
                 blocks_r_shaped: "#38BC00", //medium green
@@ -1853,5 +1870,7 @@
             startGame();
             runGame();
         </script>
+
+<div class="fb-share-button" data-href="https://alonrotem.github.io/blockpuzzle/?score=888" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Falonrotem.github.io%2Fblockpuzzle%2F%3Fscore%3D888&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
     </body>
 </html>
