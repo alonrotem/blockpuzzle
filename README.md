@@ -13,9 +13,11 @@
   * Tooltips
   * Gradients
   * Rotated text
+  * Shadoes
 
 * Single page
   * Embedded BASE64 encoded resources: sounds, favicon
+  * Mobile "Add to home screen" favicon
 
 * Vanilla Javascript
   * Basic object oriented (abstract shapes inheritance)
@@ -26,3 +28,4 @@
   * Score and high score in a cookie
   * Sound effects, turnable on/off
   * Restart button
+  * Score animation
