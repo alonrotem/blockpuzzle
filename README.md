@@ -18,6 +18,7 @@
 * Single page
   * Embedded BASE64 encoded resources: sounds, favicon
   * Mobile "Add to home screen" favicon
+  * Share on Facebook with OG API and button/popup
 
 * Vanilla Javascript
   * Basic object oriented (abstract shapes inheritance)
