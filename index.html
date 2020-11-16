@@ -42,7 +42,7 @@
             /*
             TODO
             Features
-            - Bug: restart game on mobile
+
             - Improve share button
             - By Alon Rotem links/logo
 
@@ -84,7 +84,8 @@
             - Bug: high score not updated after clearng lines
             - Bug, if the shape clears rows, so that the game is not over, it's still over..
             - Score animation
-            - Share your score?     
+            - Share your score?
+            - Bug: restart game on mobile
             */
 
             //Favicon
@@ -793,7 +794,7 @@
                 mouseButtonReleased = true;
                 e.preventDefault();
                 mousex = e.changedTouches[0].clientX;
-                mousex = e.changedTouches[0].clientY;      
+                mousey = e.changedTouches[0].clientY;
             }, false);
 
             canvas.addEventListener("touchmove", function (e) {
@@ -1059,7 +1060,6 @@
                 else
                 {
                     restartCoords = drawRestartIcon(restartx, restarty, 9, "white");
-                  
                 }
                 var mouseOnRestart = (mousex > restartCoords[0] && mousex < restartCoords[1] && mousey > restartCoords[2] && mousey < restartCoords[3]);
                 if(mouseOnRestart)
@@ -1079,7 +1079,8 @@
                         if(mouseOnSpeaker)
                         {
                             soundsOn = !soundsOn;
-                            setCookieValue("soundsOn", soundsOn);                             
+                            setCookieValue("soundsOn", soundsOn);
+                   
                         }
                     }
                     
